@@ -1,178 +1,284 @@
-# ReactJS :: Aula 01
+# Aula 02: Aprofundando em Componentes, Estado e Roteamento no React
 
-**Prof. Ricardo Maroquio**
+Bem-vindo à Aula 02 do nosso curso de ReactJS! Na Aula 01 (documentada no `README.md`), construímos a base da nossa aplicação de listagem de produtos, aprendendo sobre JSX, componentes funcionais, props e a configuração inicial com Vite.
 
-Bem-vindo à primeira aula sobre ReactJS! Este projeto serve como um estudo de caso prático para introduzir os conceitos fundamentais do React, utilizando ferramentas modernas como Vite e SWC. Ele foi pensado para alunos que já possuem conhecimentos básicos de HTML, CSS (incluindo Bootstrap 5) e JavaScript.
+Nesta aula, vamos aprofundar nossos conhecimentos, focando em:
 
-## O que é ReactJS?
+1. **Melhorar a Componentização:** Refatorar o código para criar componentes mais genéricos e reutilizáveis.
 
-ReactJS é uma biblioteca JavaScript de código aberto, criada e mantida pelo Facebook, focada na construção de interfaces de usuário (UI - User Interfaces) interativas e reutilizáveis. Suas principais características são:
+2. **Introdução ao Estado (`useState`):** Aprender como gerenciar dados que mudam dentro de um componente, tornando nossa aplicação dinâmica.
 
-*   **Declarativo:** Você descreve como a UI *deve* parecer em diferentes estados, e o React se encarrega de atualizar o DOM (Document Object Model) de forma eficiente quando os dados mudam. Isso torna o código mais previsível e fácil de depurar.
+3. **Manipulação de Eventos:** Responder a interações do usuário, como cliques em botões.
 
-*   **Baseado em Componentes:** Interfaces são quebradas em peças independentes e reutilizáveis chamadas "componentes". Cada componente gerencia seu próprio estado e lógica, e eles podem ser combinados para criar UIs complexas.
+4. **Roteamento (Navegação):** Implementar navegação entre diferentes "páginas" dentro da aplicação sem recarregar o navegador, usando `react-router-dom`.
 
-*   **Aprenda uma vez, escreva em qualquer lugar:** Embora focado na web, os princípios do React podem ser aplicados em outras plataformas, como mobile (com React Native).
+Vamos continuar evoluindo nosso estudo de caso da loja de produtos.
 
-Nesta aula, construiremos um projeto com uma única página que exibe uma lista de produtos em cards, utilizando uma estrutura básica com cabeçalho e rodapé.
+## 1. Refatoração: Criando o Componente `CardsGrid`
 
-## Ferramentas Utilizadas
+Na aula anterior, criamos um componente `Card` para exibir informações de produtos. Agora, vamos refatorar nosso código para criar um componente `CardsGrid`, que será responsável por renderizar uma grade de cards.
 
-*   **Node.js e npm:** O Node.js é um ambiente de execução JavaScript fora do navegador. O npm (Node Package Manager) é o gerenciador de pacotes padrão do Node.js, usado para instalar bibliotecas como o React e ferramentas de desenvolvimento.
+**Objetivo:** Criar um componente `CardsGrid` que renderize uma lista de `Card`s, permitindo a personalização do número de colunas e a adição de uma ação ao clicar em "Adicionar ao Carrinho".
 
-*   **Vite:** Uma ferramenta de build extremamente rápida para desenvolvimento web moderno. Ele oferece um servidor de desenvolvimento com Hot Module Replacement (HMR) instantâneo e otimiza o código para produção. Vite utiliza ferramentas nativas como esbuild (para pré-empacotamento de dependências) e SWC (para transpilação rápida de JavaScript/JSX).
+**Implementação:**
 
-    *   **Alternativa:** Create React App (CRA) era a ferramenta oficial recomendada anteriormente, mas Vite tem ganhado popularidade devido à sua velocidade superior.
-
-    *   **SWC (Speedy Web Compiler):** Um compilador ultrarrápido escrito em Rust, usado pelo Vite para converter código moderno (incluindo JSX) em JavaScript compatível com navegadores. É uma alternativa mais performática ao Babel em muitos casos.
-
-*   **React e ReactDOM:** As bibliotecas principais para construir a UI. `react` contém a lógica central do React (componentes, estado, etc.), enquanto `react-dom` fornece os métodos específicos para interagir com o DOM do navegador.
-
-*   **Bootstrap 5:** Um framework CSS popular para estilização rápida e responsiva. Usamos via CDN para simplificar a configuração inicial.
-
-## Pré-requisitos
-
-*   Conhecimento básico de HTML, CSS e JavaScript (ES6+).
-
-*   Familiaridade com os conceitos básicos do Bootstrap 5 (classes de grid, cards, navbar).
-
-*   Node.js e npm (ou yarn) instalados em sua máquina. Você pode baixá-los em [nodejs.org](https://nodejs.org/).
-
-## Configuração do Ambiente
-
-1.  **Clone o Repositório (Opcional):** Se você já tem o projeto, pode pular esta etapa.
-    ```bash
-    git clone <URL_DO_REPOSITORIO>
-    cd <NOME_DA_PASTA>
-    ```
-
-2.  **Inicie um Projeto com Vite (Alternativa):** Para começar do zero:
-    ```bash
-    npm create vite@latest meu-primeiro-app-react --template react
-    cd meu-primeiro-app-react
-    ```
-    
-    *   Isso cria uma estrutura básica de projeto React com Vite.
-
-3.  **Instale as Dependências:** Navegue até a pasta do projeto no terminal e execute:
-    ```bash
-    npm install
-    ```    
-    
-    *   Este comando lê o arquivo `package.json` e baixa todas as bibliotecas necessárias (React, ReactDOM, etc.) para a pasta `node_modules`.
-
-## Estrutura do Projeto
-
-A estrutura de pastas final desta aula, considerando um projeto React feito com Vite é:
-
-```
-react01/
-├── node_modules/      # Dependências instaladas pelo npm
-├── public/            # Arquivos estáticos (não processados pelo Vite)
-├── src/               # Código-fonte da aplicação
-│   ├── assets/        # Imagens, fontes, etc.
-│   ├── components/    # Componentes reutilizáveis da UI
-│   │   ├── Card.jsx
-│   │   ├── Footer.jsx
-│   │   └── Header.jsx
-│   ├── pages/         # Componentes que representam "páginas" (neste caso, o App principal)
-│   │   └── App.jsx
-│   └── main.jsx       # Ponto de entrada da aplicação React
-├── .eslintrc.cjs      # Configuração do ESLint (ferramenta de linting)
-├── .gitignore         # Arquivos/pastas ignorados pelo Git
-├── index.html         # Ponto de entrada HTML (processado pelo Vite)
-├── package-lock.json  # Registro exato das versões das dependências
-├── package.json       # Metadados do projeto e lista de dependências
-└── vite.config.js     # Arquivo de configuração do Vite
-```
-
-## Passo a Passo do Desenvolvimento (Estudo de Caso)
-
-A partir de agora, vamos detalhar cada parte do código, explicando o que cada arquivo faz e como eles se interagem.
-
-**1. `index.html` (Raiz do Projeto)**
-
-Este é o arquivo HTML principal que o navegador carrega. O Vite o utiliza como ponto de entrada.
-
-```html
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Incluindo Bootstrap 5 via CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Usando React</title>
-</head>
-<body>
-    <!-- O container onde a aplicação React será renderizada -->
-    <div id="root" class="d-flex flex-column min-vh-100"></div>
-
-    <!-- O script principal da aplicação React (processado pelo Vite) -->
-    <script type="module" src="/src/main.jsx"></script>
-
-    <!-- Incluindo o JavaScript do Bootstrap 5 (necessário para componentes interativos) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-```
-
-*   **`<div id="root">`:** Elemento crucial onde o React montará a aplicação. As classes `d-flex flex-column min-vh-100` do Bootstrap são usadas para garantir que o layout ocupe toda a altura da viewport e que o rodapé (que adicionaremos depois) fique no final.
-
-*   **`<script type="module" src="/src/main.jsx">`:** Carrega o ponto de entrada da nossa aplicação React. `type="module"` é essencial para usar `import`/`export` do JavaScript moderno.
-
-**2. `src/main.jsx` (Ponto de Entrada do React)**
-
-Este arquivo inicializa o React e renderiza o componente principal (`App`) dentro do `div#root`.
+1. **Criação do Componente (`src/components/CardsGrid.jsx`):**
+   
+Vamos criar um novo componente funcional chamado `CardsGrid`.
 
 ```jsx
-import { StrictMode } from 'react'; // Importa o StrictMode
-import { createRoot } from 'react-dom/client'; // Importa a API moderna de renderização
-import App from './pages/App'; // Importa nosso componente principal
+import Card from "./Card"; // Importa o componente Card
 
-// Seleciona o elemento root no HTML
-const rootElement = document.getElementById('root');
-
-// Cria a raiz da aplicação React nesse elemento
-const root = createRoot(rootElement);
-
-// Renderiza o componente App dentro da raiz
-root.render(
-  <StrictMode> {/* Envolve o App com StrictMode */}
-    <App />
-  </StrictMode>
-);
-```
-
-*   **`createRoot`:** A API recomendada para iniciar aplicações React. Ela oferece melhorias de performance e concorrência em comparação com a antiga `ReactDOM.render`.
-   
-*   **`StrictMode`:** Um componente especial do React que não renderiza nenhuma UI visível, mas ativa verificações e avisos adicionais em desenvolvimento para ajudar a identificar potenciais problemas (ex: uso de APIs legadas, efeitos colaterais inesperados). É uma boa prática usá-lo na raiz da aplicação. Após a fase de desenvolvimento, ele pode ser removido ou mantido, dependendo do projeto.
-   
-*   **`<App />`:** É aqui que nosso componente principal é chamado. A sintaxe `<NomeComponente />` é como usamos componentes em JSX.
-
-**3. Componentização: Criando Peças Reutilizáveis**
-
-A ideia central do React é dividir a UI em componentes. Vamos criar três componentes básicos: `Header`, `Footer` e `Card`.
-
-*   Crie as pastas `src/components` e `src/pages`.
-
-*   Mova (ou crie) o `App.jsx` para dentro de `src/pages`.
-
-*   Crie os arquivos `Header.jsx`, `Footer.jsx` e `Card.jsx` dentro de `src/components`.
-
-**4. `src/components/Header.jsx`**
-
-Este é um componente funcional (baseado em função) simples para o cabeçalho. Versões iniciais do React usavam classes, mas a abordagem funcional é mais moderna e recomendada.
-
-```jsx
-// Define o componente funcional Header usando arrow function
-const Header = () => {
-  // Retorna a estrutura JSX da navbar do Bootstrap
+// Recebe title, items (array), cols (número) e onAddToCart (função) como props
+const CardsGrid = ({ title, items, cols = 4, onAddToCart }) => { // Define cols=4 como padrão
+  // Define a classe de coluna do Bootstrap dinamicamente
+  const colClass = `row-cols-1 row-cols-md-${Math.max(1, Math.floor(cols / 2))} row-cols-lg-${cols}`;
   return (
-    <> {/* Fragmento: permite retornar múltiplos elementos sem um div extra */}
+    <section className="mb-4">
+      <h2>{title}</h2>
+      <hr />
+      <div className={`row ${colClass} g-3`}>
+        {items.map((item) => (
+          <Card
+            key={item.id}
+            image={item.image}
+            title={item.title}
+            description={item.description}
+            link={`/item/${item.id}`}
+            // Passa a função onAddToCart para o Card, associando-a ao item específico
+            // Usamos uma arrow function para garantir que 'item' seja passado corretamente
+            // quando o botão no Card for clicado.
+            onAddToCartClick={() => onAddToCart(item)}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default CardsGrid;
+```
+
+* **Props Genéricas:** O componente agora aceita `title`, `items`, `cols` e a nova prop `onAddToCart` (que será uma função).
+  
+* **Repasse da Função:** A função `onAddToCart` recebida é passada para a prop `onAddToCartClick` de cada `Card`. Usamos uma arrow function `() => onAddToCart(item)` para garantir que, quando o botão for clicado no `Card`, a função `onAddToCart` seja chamada com o `item` correto como argumento.
+
+1. **Utilização no `App.jsx` (`src/pages/App.jsx`):**
+    
+Modificamos o `App.jsx` para importar e usar o novo componente, além de introduzir o estado.
+
+```jsx
+import { useState } from 'react'; // Importa o hook useState
+import CardsGrid from "../components/CardsGrid";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+
+function App() {
+  // Inicializa o estado para a contagem de itens no carrinho
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const products = [
+    // ... (array de produtos)
+  ];
+  // Função chamada quando o botão "Adicionar ao Carrinho" em um Card é clicado
+  const handleAddToCart = (product) => {
+    setCartItemCount(prevCount => prevCount + 1);
+    console.log("Adicionado ao carrinho:", product.title);
+  };
+  return (
+    <>
+      {/* Passa a contagem atual do carrinho como prop para o Header */}
+      <Header cartCount={cartItemCount} />
+      <main className="container my-4 flex-grow-1">
+        {/* Passa a função handleAddToCart como prop para o CardsGrid */}
+        <CardsGrid
+          title="Produtos"
+          items={products}
+          cols={4}
+          onAddToCart={handleAddToCart} // Passa a função definida acima
+        />
+      </main>
+      <Footer />
+    </>
+  )
+}
+
+export default App;
+```
+
+* **Importação do `useState`:** O hook `useState` é importado do React.
+
+* **Inicialização do Estado:** `const [cartItemCount, setCartItemCount] = useState(0);` cria uma variável de estado `cartItemCount` (inicializada com 0) e uma função `setCartItemCount` para atualizá-la.
+
+* **Função `handleAddToCart`:** Esta função será chamada quando um item for adicionado, ou seja, quando o botão *Adicionar ao Carrinho* de um card for clicado. Ela usa `setCartItemCount` para atualizar o estado.
+
+* **Passando Props:** A função `handleAddToCart` é passada como prop `onAddToCart` para o `CardsGrid`, e o valor atual de `cartItemCount` é passado como prop `cartCount` para o `Header`.
+
+**Benefícios da Refatoração:**
+
+* Código mais legível e organizado.
+
+* Maior reutilização de componentes.
+
+* Manutenção facilitada.
+
+* Separação de responsabilidades.
+
+## 2. Estado e Eventos: Adicionando Interatividade
+
+Até agora, nossa aplicação era estática. Os dados (lista de produtos) eram definidos uma vez e a UI era renderizada com base neles. Mas e se quisermos que a UI mude em resposta a ações do usuário, como clicar em um botão? É aí que entram o **Estado** e os **Eventos**.
+
+**O que é Estado?**
+
+* Estado (`state`) refere-se a dados que pertencem a um componente e podem mudar ao longo do tempo.
+
+* Quando o estado de um componente muda, o React automaticamente **re-renderiza** esse componente (e seus filhos, se necessário) para refletir a mudança na UI.
+
+* Diferente das `props` (que são passadas de pai para filho e são imutáveis *dentro* do filho), o estado é gerenciado *internamente* pelo próprio componente.
+
+**O Hook `useState`**
+
+* Para adicionar estado a componentes funcionais, usamos **Hooks**. O hook fundamental para gerenciar estado é o `useState`.
+
+* **Como usar:**
+  
+  1. Importe-o: `import { useState } from 'react';`
+  
+  2. Chame-o dentro do componente: `const [nomeDaVariavel, setNomeDaVariavel] = useState(valorInicial);`
+      
+      * `useState(valorInicial)`: Define o valor inicial do estado.
+      
+      * Retorna um array com duas coisas:
+          
+          * `nomeDaVariavel`: A variável que contém o valor *atual* do estado.
+          
+          * `setNomeDaVariavel`: A função que você **deve** usar para *atualizar* o valor do estado. Chamar essa função dispara a re-renderização.
+
+**O que são Eventos?**
+
+* Eventos são ações que acontecem no navegador, como cliques de mouse (`click`), digitação (`change`, `keyDown`), envio de formulário (`submit`) etc.
+
+* React fornece uma forma de "escutar" e responder a esses eventos diretamente nos elementos JSX.
+
+**Manipulando Eventos em React**
+
+* Usamos atributos especiais nos elementos JSX, como `onClick`, `onChange`, `onSubmit` etc. (note o camelCase).
+
+* O valor desses atributos deve ser uma **função** (geralmente chamada de *event handler* ou *callback*) que será executada quando o evento ocorrer.
+    
+```jsx
+<button onClick={minhaFuncaoDeClique}>Clique Aqui</button>
+```
+
+**Implementando o "Adicionar ao Carrinho":**
+
+Nosso objetivo é:
+
+1. Adicionar um botão "Adicionar ao Carrinho" em cada `Card`.
+
+2. Quando o botão for clicado, incrementar um contador geral de itens no carrinho.
+
+3. Exibir essa contagem no `Header`.
+
+**Fluxo de Dados e Eventos:**
+
+Como o contador (`cartItemCount`) precisa ser exibido no `Header` e atualizado por ações nos `Cards` (que estão dentro do `CardsGrid`), o local mais lógico para gerenciar esse estado é no componente pai comum mais próximo: o `App.jsx`.
+
+O fluxo será o seguinte:
+
+1. **`App.jsx`:**
+    
+    * Define o estado `cartItemCount` usando `useState(0)`.
+    
+    * Define a função `handleAddToCart(product)` que chama `setCartItemCount` para incrementar o estado.
+    
+    * Passa `cartItemCount` como prop `cartCount` para o `Header`.
+    
+    * Passa `handleAddToCart` como prop `onAddToCart` para o `CardsGrid`.
+
+2. **`CardsGrid.jsx`:**
+    
+    * Recebe a prop `onAddToCart`.
+    
+    * Para cada `item` mapeado, passa uma *nova função* `() => onAddToCart(item)` como prop `onAddToCartClick` para o `Card`. Isso garante que quando o botão no `Card` for clicado, a função original `handleAddToCart` no `App` seja chamada com o `item` correto.
+
+3. **`Card.jsx`:**
+    
+    * Recebe a prop `onAddToCartClick`.
+    
+    * Adiciona um `<button>`.
+    
+    * Define o atributo `onClick` do botão para ser a função `onAddToCartClick` recebida.
+
+4. **`Header.jsx`:**
+    
+    * Recebe a prop `cartCount`.
+    
+    * Exibe o valor de `cartCount` dentro de um `<span>` ou `badge`.
+
+**Modificações no Código:**
+
+1. **`src/components/Card.jsx`:**
+    
+```javascript
+// Adiciona onAddToCartClick às props recebidas
+const Card = ({ image, title, description, onAddToCartClick }) => {
+  return (
+    <>
+      <div className="col">
+        <div className="card">
+          <img src={image} className="card-img-top" alt="imagem do card" />
+          <div className="card-body">
+            <h5 className="card-title">{title}</h5>
+            <p className="card-text">{description}</p>
+          </div>
+          <div className="card-footer">                      
+            {/* Botão para adicionar ao carrinho */}
+            {/* O evento onClick chama a função recebida via prop */}
+            <button onClick={onAddToCartClick} className="btn btn-success w-100">
+              Adicionar ao Carrinho
+            </button>
+            {/* O link "Ver Detalhes" foi removido para este exemplo,
+                poderia ser mantido ou adaptado conforme a necessidade */}
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default Card;
+```
+    
+* Adicionamos a prop `onAddToCartClick`.
+    
+* Adicionamos o botão e atribuímos a função recebida à prop `onClick`.
+
+2. **`src/components/CardsGrid.jsx`:** (Já mostrado na seção anterior, mas relevante aqui)
+    
+    * Recebe `onAddToCart` e passa `() => onAddToCart(item)` para cada `Card`.
+
+3. **`src/pages/App.jsx`:** (Já mostrado na seção anterior, mas relevante aqui)
+    
+    * Importa `useState`.
+    
+    * Define `[cartItemCount, setCartItemCount] = useState(0)`.
+    
+    * Define `handleAddToCart`.
+    
+    * Passa `cartCount={cartItemCount}` para `Header`.
+    
+    * Passa `onAddToCart={handleAddToCart}` para `CardsGrid`.
+
+4. **`src/components/Header.jsx`:**
+
+```javascript
+// Recebe cartCount como prop
+const Header = ({ cartCount = 0 }) => { // Define 0 como valor padrão
+  return (
+    <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
         <div className="container">
-          <a className="navbar-brand" href="/">React App</a>
+          <a className="navbar-brand" href="/">React</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -183,198 +289,262 @@ const Header = () => {
               <a className="nav-link" href="/sobre">Quem Somos</a>
               <a className="nav-link" href="/contato">Contato</a>
             </div>
+            {/* Exibe a contagem do carrinho no final da navbar */}
+            <span className="navbar-text ms-auto"> {/* ms-auto alinha à direita */}
+              Carrinho:
+              <span className="badge bg-secondary ms-2">{cartCount}</span>
+            </span>
           </div>
         </div>
       </nav>
     </>
-  );
-};
+  )
+}
 
-// Exporta o componente para que possa ser importado em outros arquivos
 export default Header;
 ```
 
-*   **Componente Funcional:** A forma moderna e recomendada de criar componentes em React. É basicamente uma função JavaScript que retorna JSX.
+* Recebe a prop `cartCount`.
 
-*   **JSX (JavaScript XML):** Uma extensão de sintaxe que permite escrever "HTML" dentro do JavaScript. Note que usamos `className` em vez de `class`.
+* Exibe o valor dentro de um `<span>` com um badge do Bootstrap.
 
-*   **`export default Header;`:** Torna o componente `Header` disponível para ser importado em outros arquivos (como o `App.jsx`).
+**Resultado:**
 
-*   **Alternativa de Navegação:** Em uma aplicação React completa com múltiplas páginas (Single Page Application - SPA), usaríamos uma biblioteca como `react-router-dom` e seus componentes `<Link>` em vez de `<a>` para evitar recarregamentos completos da página.
+Agora, ao clicar no botão "Adicionar ao Carrinho" em qualquer card, o número no contador do cabeçalho será incrementado. Isso demonstra o ciclo fundamental do React: **Evento -> Atualização do Estado -> Re-renderização da UI**.
 
-**5. `src/components/Footer.jsx`**
+**Pontos Chave:**
 
-Similar ao Header, um componente funcional para o rodapé.
+* Use `useState` para dados que mudam e afetam a UI.
 
+* Use a função `set...` retornada pelo `useState` para atualizar o estado.
+
+* Use manipuladores de evento como `onClick` para responder a interações.
+
+* Passe funções de callback como props para permitir que componentes filhos comuniquem eventos aos pais.
+
+* Coloque o estado no componente pai comum mais próximo que precisa da informação ou da capacidade de alterá-la.
+
+## 3. Roteamento: Navegando entre Páginas com `react-router-dom`
+
+Até agora, nossa aplicação tinha apenas uma "visualização" principal dentro do `App.jsx`. Aplicações web reais geralmente possuem múltiplas páginas ou seções (Home, Produtos, Sobre, Contato etc.). Em aplicações web tradicionais, clicar em um link geralmente causa um recarregamento completo da página pelo navegador.
+
+**Single Page Applications (SPAs)**
+
+React é frequentemente usado para construir SPAs. Em uma SPA, a aplicação carrega um único arquivo HTML inicial (nosso `index.html`) e, a partir daí, o JavaScript (React, neste caso) manipula o DOM dinamicamente para exibir diferentes "páginas" ou visualizações *sem* recarregar a página inteira do servidor. Isso resulta em uma experiência de usuário mais rápida e fluida, semelhante a um aplicativo desktop ou móvel.
+
+**Como funciona o Roteamento em SPAs?**
+
+Bibliotecas de roteamento como `react-router-dom` interceptam a navegação. Quando você clica em um link especial (ou a URL muda), em vez de fazer uma nova requisição ao servidor, a biblioteca:
+
+1. Atualiza a URL na barra de endereços do navegador (usando a History API do HTML5).
+
+2. Verifica qual componente React está associado à nova URL.
+
+3. Renderiza o componente correspondente na área designada da página.
+
+**A Biblioteca `react-router-dom`**
+
+É a biblioteca de roteamento mais popular para aplicações React. Ela fornece um conjunto de componentes e hooks para gerenciar a navegação.
+
+**Implementação:**
+
+**Objetivo:** Criar duas páginas distintas:
+
+* `HomePage`: Exibirá uma mensagem de boas-vindas e produtos em destaque.
+
+* `ProductsPage`: Exibirá todos os produtos do catálogo.
+
+Depois de criar as páginas, devemos permitir a navegação entre elas usando links no `Header`, que, por sua vez, devem indicar qual página está ativa.
+
+**Passos:**
+
+1. **Instalação:**
+
+Primeiro, adicionamos a biblioteca ao projeto:
+
+```bash
+npm install react-router-dom
+```
+
+2. **Criação dos Componentes de Página:**
+
+Criamos componentes separados para cada página dentro de `src/pages/`:
+
+* **`src/pages/HomePage.jsx`:**
+    
 ```jsx
-const Footer = () => {
+import CardsGrid from "../components/CardsGrid";
+
+// Recebe a lista de produtos e a função onAddToCart como props
+const HomePage = ({ products, onAddToCart }) => {
+  // Simula produtos em destaque pegando os 3 primeiros
+  const featuredProducts = products.slice(0, 3);
   return (
-    <>
-      {/* mt-auto empurra o footer para baixo em layouts flexbox */}
-      <footer className="text-bg-dark mt-auto">
-        <div className="container py-3 text-center">
-          <p className="m-0">© 2025 Meu Primeiro App React. Todos os direitos reservados.</p>
-        </div>
-      </footer>
-    </>
+    <div>
+      <h1>Bem-vindo à Nossa Loja!</h1>
+      <p>Confira nossos produtos em destaque:</p>
+      <CardsGrid
+        title="Destaques"
+        items={featuredProducts}
+        cols={3} // Exibe 3 colunas na home
+        onAddToCart={onAddToCart}
+      />
+    </div>
   );
 };
 
-export default Footer;
+export default HomePage;
 ```
 
-**6. `src/components/Card.jsx`**
-
-Este componente receberá dados (via `props`) para exibir informações diferentes para cada produto.
-
+* **`src/pages/ProductsPage.jsx`:**
+    
 ```jsx
-// Recebe props (image, title, description, link) como argumento
-// Usamos desestruturação ({...}) para acessar as props diretamente
-const Card = ({ image, title, description, link }) => {
+import CardsGrid from "../components/CardsGrid";
+
+// Recebe a lista completa de produtos e a função onAddToCart como props
+const ProductsPage = ({ products, onAddToCart }) => {
   return (
-    <>
-      {/* Usa a classe 'col' do Bootstrap para se encaixar no grid */}
-      <div className="col">
-        <div className="card h-100"> {/* h-100 para igualar altura dos cards */}
-          {/* Usa a prop 'image' no src da imagem */}
-          <img src={image} className="card-img-top" alt={title} /> {/* Boa prática: alt dinâmico */}
-          <div className="card-body d-flex flex-column"> {/* Flex column para alinhar botão */}
-            {/* Usa a prop 'title' */}
-            <h5 className="card-title">{title}</h5>
-            {/* Usa a prop 'description' */}
-            <p className="card-text">{description}</p>
-            {/* Usa a prop 'link' no href do botão. mt-auto empurra o botão para baixo */}
-            <a href={link} className="btn btn-primary mt-auto">Ver Detalhes</a>
-          </div>
-          {/* O card-footer foi removido para simplificar e usar mt-auto no botão */}
-        </div>
-      </div>
-    </>
+    <div>
+      <CardsGrid
+        title="Todos os Produtos"
+        items={products}
+        cols={4} // Mantém 4 colunas na página de produtos
+        onAddToCart={onAddToCart}
+      />
+    </div>
   );
 };
 
-export default Card;
+export default ProductsPage;
 ```
 
-*   **Props (Propriedades):** São como argumentos de função para componentes React. Permitem passar dados de um componente pai (`App`) para um componente filho (`Card`). Aqui, recebemos `image`, `title`, `description` e `link`.
+* Note que ambas as páginas recebem `products` e `onAddToCart` como props, pois precisam desses dados/funções que são gerenciados pelo `App`.
 
-*   **Desestruturação (`{ image, title, ... }`):** Uma forma concisa de extrair valores de objetos ou arrays. Facilita o acesso às props.
+3. **Configuração do Roteador no `App.jsx`:**
 
-*   **Expressões `{}` em JSX:** Permitem incorporar variáveis ou expressões JavaScript diretamente no JSX.
-
-**7. `src/pages/App.jsx` (Componente Principal)**
-
-Agora, vamos montar tudo no componente `App`.
+O componente `App.jsx` agora se torna o ponto central para configurar o layout principal e as rotas para as páginas da aplicação. O código atualizado do `App.jsx` fica assim:
 
 ```jsx
-// Importa os componentes que vamos usar
-import Card from "../components/Card";
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Importa componentes do router
+// Importa os componentes de layout e páginas
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import HomePage from './HomePage'; // Importa a nova página Home
+import ProductsPage from './ProductsPage'; // Importa a nova página Produtos
 
-// Define o componente funcional App
 function App() {
-  // Dados dos produtos (em uma aplicação real, viriam de uma API)
-  const products = [
-    { id: 1, image: "https://picsum.photos/300/200?random=1", title: "Produto 1", description: "Descrição breve e interessante do Produto 1." },
-    { id: 2, image: "https://picsum.photos/300/200?random=2", title: "Produto 2", description: "Descrição breve e interessante do Produto 2." },
-    { id: 3, image: "https://picsum.photos/300/200?random=3", title: "Produto 3", description: "Descrição breve e interessante do Produto 3." },
-    { id: 4, image: "https://picsum.photos/300/200?random=4", title: "Produto 4", description: "Descrição breve e interessante do Produto 4." },
-    { id: 5, image: "https://picsum.photos/300/200?random=5", title: "Produto 5", description: "Descrição breve e interessante do Produto 5." },
-    { id: 6, image: "https://picsum.photos/300/200?random=6", title: "Produto 6", description: "Descrição breve e interessante do Produto 6." },
-  ];
-
-  // Retorna a estrutura JSX da página
+  // Estado do carrinho e dados dos produtos permanecem aqui
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const products = [ /* ... array de produtos ... */ ];
+  const handleAddToCart = (product) => { /* ... função ... */ };
+  // O componente App agora configura o roteador e o layout principal
   return (
-    <> {/* Usa Fragment para agrupar Header, main e Footer */}
-      <Header /> {/* Renderiza o componente Header */}
-      <main className="container my-4 flex-grow-1"> {/* flex-grow-1 para ocupar espaço disponível */}
-        <h1>Nossos Produtos</h1>
-        <hr />
-        {/* Grid do Bootstrap para os cards: 4 colunas em telas médias ou maiores */}
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4"> {/* Ajustado para melhor responsividade */}
-          {/* Mapeia o array de produtos para renderizar um Card para cada um */}
-          {products.map((product) => (
-            // Passa os dados do produto como props para o componente Card
-            // A prop 'key' é ESSENCIAL para o React otimizar a renderização de listas
-            <Card
-              key={product.id} // Chave única para cada item da lista
-              image={product.image}
-              title={product.title}
-              description={product.description}
-              link={"/produto/" + product.id} // Exemplo de link dinâmico
+    // 1. BrowserRouter: Envolve toda a aplicação que usará roteamento.
+    <BrowserRouter>
+      <div className="d-flex flex-column min-vh-100">
+        {/* Header fica fora das Routes para ser exibido em todas as páginas */}
+        <Header cartCount={cartItemCount} />
+        <main className="container my-4 flex-grow-1">
+          {/* 2. Routes: Define a área onde o componente da rota correspondente será renderizado. */}
+          <Routes>
+            {/* 3. Route: Define uma rota específica. */}
+            <Route
+              path="/" // O caminho (URL) para esta rota
+              // O componente (página) a ser renderizado quando a URL corresponder ao path.
+              // Passamos as props necessárias para a página.
+              element={<HomePage products={products} onAddToCart={handleAddToCart} />}
             />
-          ))}
-        </div>
-      </main>
-      <Footer /> {/* Renderiza o componente Footer */}
-    </>
+            <Route
+              path="/produtos"
+              element={<ProductsPage products={products} onAddToCart={handleAddToCart} />}
+            />
+            {/* Poderíamos adicionar mais rotas aqui */}
+          </Routes>
+        </main>
+        {/* Footer também fica fora das Routes */}
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 
-// Exporta o componente App
 export default App;
 ```
 
-*   **Importando Componentes:** Usamos `import` para trazer os componentes `Header`, `Footer` e `Card`.
+* **`<BrowserRouter>`:** Componente que habilita o roteamento baseado na History API do HTML5. Deve envolver toda a parte da sua aplicação que precisa de roteamento.
 
-*   **Dados:** Definimos um array `products` diretamente no código. Em aplicações reais, esses dados geralmente vêm de uma fonte externa (API).
+* **`<Routes>`:** Funciona como um `switch`. Ele olha para a URL atual e renderiza o primeiro `<Route>` cujo `path` corresponda.
 
-*   **Renderização de Listas com `.map()`:** O método `map` do JavaScript é usado para transformar cada item do array `products` em um componente `<Card>`.
+* **`<Route>`:** Define a associação entre um caminho (`path`) e um componente (`element`). Quando a URL bate com o `path`, o componente especificado em `element` é renderizado dentro do `<Routes>`. Passamos as props necessárias (`products`, `onAddToCart`) para os componentes de página aqui.
 
-*   **Passando Props:** Para cada `product` no `map`, passamos suas propriedades (`id`, `image`, `title`, `description`) como `props` para o componente `<Card>`.
+* **Layout Persistente:** Note que `<Header>` e `<Footer>` estão *fora* do `<Routes>`. Isso significa que eles serão renderizados em *todas* as páginas definidas pelas rotas, criando um layout consistente. Apenas o conteúdo dentro de `<main>` mudará conforme a rota.
 
-*   **Prop `key`:** Ao renderizar listas, o React precisa de uma `key` única e estável para cada elemento. Isso ajuda o React a identificar eficientemente quais itens mudaram, foram adicionados ou removidos, otimizando as atualizações do DOM. Usar o `id` do produto é ideal aqui. **Nunca use o índice do array como `key` se a ordem dos itens puder mudar.**
+4. **Atualização dos Links no `Header.jsx` com `<NavLink>`:**
 
-## Conceitos Fundamentais Revisados
+Para que os links no cabeçalho funcionem com o roteador (sem recarregar a página) e para que eles possam indicar visualmente qual página está ativa, substituímos as tags `<a>` pelo componente `<NavLink>` do `react-router-dom`.
 
-*   **Componentes Funcionais:** Funções JavaScript que retornam JSX.
+```jsx
+import { NavLink } from 'react-router-dom'; // Importa NavLink
 
-*   **JSX:** Sintaxe que mistura HTML e JavaScript (`className`, `{expressões}`).
+const Header = ({ cartCount = 0 }) => {
+  return (
+    <>
+      <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div className="container">
+          <NavLink className="navbar-brand" to="/">React Router App</NavLink>
+          <button /* ... */ > {/* Botão Toggler */} </button>
+          <div className="collapse navbar-collapse" id="menuPrincipal">
+            <div className="navbar-nav">
+              {/* NavLink em vez de <a> */}
+              <NavLink className="nav-link" to="/" end>
+                Home
+              </NavLink>
+              <NavLink className="nav-link" to="/produtos">
+                Produtos
+              </NavLink>
+              {/* Links para rotas não definidas ainda podem ser <a> */}
+              <a className="nav-link" href="/sobre">Quem Somos</a>
+              <a className="nav-link" href="/contato">Contato</a>
+            </div>
+            <span className="navbar-text ms-auto">
+              Carrinho:
+              <span className="badge bg-primary rounded-pill ms-2">{cartCount}</span>
+            </span>
+          </div>
+        </div>
+      </nav>
+    </>
+  )
+}
 
-*   **Props:** Como passar dados de componentes pai para filho.
+export default Header;
+```
 
-*   **Componentização:** Dividir a UI em partes reutilizáveis (`Header`, `Footer`, `Card`).
+* **`<NavLink>` vs `<Link>`:** Ambos criam links que funcionam com o roteador. A principal diferença é que `<NavLink>` sabe se ele está "ativo" (se seu atributo `to` corresponde à URL atual) e automaticamente adiciona a classe `active` ao elemento.
 
-*   **Renderização de Listas:** Usar `.map()` para gerar múltiplos componentes a partir de dados.
+* **Prop `to`:** Especifica o caminho para onde o link deve navegar (semelhante ao `href`).
 
-*   **Keys:** Atributo essencial para otimizar a renderização de listas.
+* **Prop `end`:** Essencial para links de índice (como `to="/"`). Sem `end`, o link "Home" ficaria ativo mesmo quando estivéssemos em `/produtos`, porque `/produtos` *começa com* `/`. A prop `end` força uma correspondência exata do caminho.
 
-*   **`createRoot` e `StrictMode`:** A forma moderna de iniciar a aplicação e detectar problemas.
+**Resultado:**
 
-*   **Vite e SWC:** Ferramentas que tornam o desenvolvimento rápido e eficiente.
+A aplicação agora tem duas páginas distintas (`/` e `/produtos`). Clicar nos links "Home" e "Produtos" no cabeçalho alterna entre as páginas `HomePage` e `ProductsPage` sem recarregar o navegador. O link correspondente à página atual recebe a classe `active`, destacando-o visualmente.
 
-## Como Executar o Projeto
+**Conceitos Adicionais de Roteamento que Ainda Exploraremos:**
 
-1.  Certifique-se de ter instalado as dependências com `npm install`.
+* **Parâmetros de Rota:** Definir rotas que capturam valores da URL (ex: `/produto/:productId`) para exibir detalhes de um item específico. Usa-se o hook `useParams`.
 
-2.  Inicie o servidor de desenvolvimento Vite:
-    ```bash
-    npm run dev
-    ```
+* **Rotas Aninhadas:** Estruturar rotas dentro de outras rotas para layouts mais complexos.
 
-3.  Abra seu navegador e acesse o endereço fornecido pelo Vite (geralmente `http://localhost:5173`).
+* **Navegação Programática:** Mudar de rota através de código JavaScript (ex: após um login bem-sucedido), usando o hook `useNavigate`.
 
-Você verá a página de produtos funcionando! Qualquer alteração que você fizer nos arquivos `.jsx` será refletida quase instantaneamente no navegador graças ao HMR do Vite.
+* **Rotas Protegidas:** Redirecionar usuários não autenticados para uma página de login.
 
-## Próximos Passos
+* **Página 404 (Not Found):** Criar uma rota "catch-all" (`path="*"`) para exibir uma mensagem amigável quando nenhuma outra rota corresponder.
 
-Este projeto é apenas o começo! A partir daqui, vamos estudar conceitos mais avançados do React, a saber:
+## 4. Conclusão
 
-*   **Roteamento (`react-router-dom`):** Para criar aplicações com múltiplas páginas (SPAs).
-  
-*   **Estado (`useState`):** Para gerenciar dados que mudam ao longo do tempo dentro de um componente (ex: contador, dados de formulário).
+Nesta aula, aprendemos a refatorar nosso código para criar componentes mais reutilizáveis, introduzimos o conceito de estado e eventos no React, e implementamos roteamento com `react-router-dom` para navegar entre diferentes páginas da nossa aplicação.
 
-*   **Eventos (`onClick`, `onChange`):** Para responder a interações do usuário.
-
-*   **Hooks (`useEffect`, `useContext`, etc.):** Funções especiais que permitem usar estado e outros recursos do React em componentes funcionais.
-
-*   **Requisições a APIs (`fetch` ou `axios`):** Para buscar dados de um servidor externo.
-
-*   **Estilização:** Explorar outras formas de estilizar componentes (CSS Modules, Styled Components, Tailwind CSS).
-
-Espero que esta aula tenha fornecido uma introdução clara e prática ao mundo do ReactJS! Até a próxima aula!
-
-## Conclusão
-
-Neste primeiro contato com o React, você aprendeu os conceitos fundamentais da biblioteca, como criar componentes funcionais, passar props e renderizar listas. Além disso, conheceu ferramentas modernas, como Vite e SWC, que tornam o desenvolvimento mais rápido e eficiente. Com essa base, você está pronto para explorar recursos mais avançados e construir aplicações web dinâmicas e interativas.
+Com isso, nossa aplicação agora é mais modular, interativa e pronta para escalar. Na próxima aula, vamos explorar mais sobre gerenciamento de estado com Context API e Hooks personalizados, além de introduzir o hook `useEffect` para lidar com efeitos colaterais, como chamadas a APIs.
