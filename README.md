@@ -1,5 +1,7 @@
 # ReactJs :: Aula 02
 
+**Prof. Ricardo Maroquio**
+
 Bem-vindo à Aula 02 do nosso curso de ReactJS! Na Aula 01 (documentada no `README.md`), construímos a base da nossa aplicação de listagem de produtos, aprendendo sobre JSX, componentes funcionais, props e a configuração inicial com Vite.
 
 Nesta aula, vamos aprofundar nossos conhecimentos, focando em:
