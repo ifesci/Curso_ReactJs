@@ -4,33 +4,33 @@
 
 Bem-vindo à primeira aula sobre ReactJS! Este projeto serve como um estudo de caso prático para introduzir os conceitos fundamentais do React, utilizando ferramentas modernas como Vite e SWC. Ele foi pensado para alunos que já possuem conhecimentos básicos de HTML, CSS (incluindo Bootstrap 5) e JavaScript.
 
-## O que é ReactJS?
+## 1. O que é ReactJS?
 
 ReactJS é uma biblioteca JavaScript de código aberto, criada e mantida pelo Facebook, focada na construção de interfaces de usuário (UI - User Interfaces) interativas e reutilizáveis. Suas principais características são:
 
-*   **Declarativo:** Você descreve como a UI *deve* parecer em diferentes estados, e o React se encarrega de atualizar o DOM (Document Object Model) de forma eficiente quando os dados mudam. Isso torna o código mais previsível e fácil de depurar.
+* **Declarativo:** Você descreve como a UI *deve* parecer em diferentes estados, e o React se encarrega de atualizar o DOM (Document Object Model) de forma eficiente quando os dados mudam. Isso torna o código mais previsível e fácil de depurar.
 
-*   **Baseado em Componentes:** Interfaces são quebradas em peças independentes e reutilizáveis chamadas "componentes". Cada componente gerencia seu próprio estado e lógica, e eles podem ser combinados para criar UIs complexas.
+* **Baseado em Componentes:** Interfaces são quebradas em peças independentes e reutilizáveis chamadas "componentes". Cada componente gerencia seu próprio estado e lógica, e eles podem ser combinados para criar UIs complexas.
 
-*   **Aprenda uma vez, escreva em qualquer lugar:** Embora focado na web, os princípios do React podem ser aplicados em outras plataformas, como mobile (com React Native).
+* **Aprenda uma vez, escreva em qualquer lugar:** Embora focado na web, os princípios do React podem ser aplicados em outras plataformas, como mobile (com React Native).
 
 Nesta aula, construiremos um projeto com uma única página que exibe uma lista de produtos em cards, utilizando uma estrutura básica com cabeçalho e rodapé.
 
-## Ferramentas Utilizadas
+### Ferramentas Utilizadas
 
-*   **Node.js e npm:** O Node.js é um ambiente de execução JavaScript fora do navegador. O npm (Node Package Manager) é o gerenciador de pacotes padrão do Node.js, usado para instalar bibliotecas como o React e ferramentas de desenvolvimento.
+* **Node.js e npm:** O Node.js é um ambiente de execução JavaScript fora do navegador. O npm (Node Package Manager) é o gerenciador de pacotes padrão do Node.js, usado para instalar bibliotecas como o React e ferramentas de desenvolvimento.
 
-*   **Vite:** Uma ferramenta de build extremamente rápida para desenvolvimento web moderno. Ele oferece um servidor de desenvolvimento com Hot Module Replacement (HMR) instantâneo e otimiza o código para produção. Vite utiliza ferramentas nativas como esbuild (para pré-empacotamento de dependências) e SWC (para transpilação rápida de JavaScript/JSX).
+* **Vite:** Uma ferramenta de build extremamente rápida para desenvolvimento web moderno. Ele oferece um servidor de desenvolvimento com Hot Module Replacement (HMR) instantâneo e otimiza o código para produção. Vite utiliza ferramentas nativas como esbuild (para pré-empacotamento de dependências) e SWC (para transpilação rápida de JavaScript/JSX).
 
-    *   **Alternativa:** Create React App (CRA) era a ferramenta oficial recomendada anteriormente, mas Vite tem ganhado popularidade devido à sua velocidade superior.
+    * **Alternativa:** Create React App (CRA) era a ferramenta oficial recomendada anteriormente, mas Vite tem ganhado popularidade devido à sua velocidade superior.
 
-    *   **SWC (Speedy Web Compiler):** Um compilador ultrarrápido escrito em Rust, usado pelo Vite para converter código moderno (incluindo JSX) em JavaScript compatível com navegadores. É uma alternativa mais performática ao Babel em muitos casos.
+    * **SWC (Speedy Web Compiler):** Um compilador ultrarrápido escrito em Rust, usado pelo Vite para converter código moderno (incluindo JSX) em JavaScript compatível com navegadores. É uma alternativa mais performática ao Babel em muitos casos.
 
-*   **React e ReactDOM:** As bibliotecas principais para construir a UI. `react` contém a lógica central do React (componentes, estado, etc.), enquanto `react-dom` fornece os métodos específicos para interagir com o DOM do navegador.
+* **React e ReactDOM:** As bibliotecas principais para construir a UI. `react` contém a lógica central do React (componentes, estado, etc.), enquanto `react-dom` fornece os métodos específicos para interagir com o DOM do navegador.
 
-*   **Bootstrap 5:** Um framework CSS popular para estilização rápida e responsiva. Usamos via CDN para simplificar a configuração inicial.
+* **Bootstrap 5:** Um framework CSS popular para estilização rápida e responsiva. Usamos via CDN para simplificar a configuração inicial.
 
-## Pré-requisitos
+### Pré-requisitos
 
 *   Conhecimento básico de HTML, CSS e JavaScript (ES6+).
 
@@ -38,7 +38,7 @@ Nesta aula, construiremos um projeto com uma única página que exibe uma lista 
 
 *   Node.js e npm (ou yarn) instalados em sua máquina. Você pode baixá-los em [nodejs.org](https://nodejs.org/).
 
-## Configuração do Ambiente
+## 2. Configuração do Ambiente
 
 1.  **Clone o Repositório (Opcional):** Se você já tem o projeto, pode pular esta etapa.
     ```bash
@@ -61,7 +61,7 @@ Nesta aula, construiremos um projeto com uma única página que exibe uma lista 
     
     *   Este comando lê o arquivo `package.json` e baixa todas as bibliotecas necessárias (React, ReactDOM, etc.) para a pasta `node_modules`.
 
-## Estrutura do Projeto
+## 3. Estrutura do Projeto
 
 A estrutura de pastas final desta aula, considerando um projeto React feito com Vite é:
 
@@ -86,7 +86,7 @@ react01/
 └── vite.config.js     # Arquivo de configuração do Vite
 ```
 
-## Passo a Passo do Desenvolvimento (Estudo de Caso)
+## 4. Passo a Passo do Desenvolvimento (Estudo de Caso)
 
 A partir de agora, vamos detalhar cada parte do código, explicando o que cada arquivo faz e como eles se interagem.
 
@@ -325,8 +325,22 @@ export default App;
 *   **Passando Props:** Para cada `product` no `map`, passamos suas propriedades (`id`, `image`, `title`, `description`) como `props` para o componente `<Card>`.
 
 *   **Prop `key`:** Ao renderizar listas, o React precisa de uma `key` única e estável para cada elemento. Isso ajuda o React a identificar eficientemente quais itens mudaram, foram adicionados ou removidos, otimizando as atualizações do DOM. Usar o `id` do produto é ideal aqui. **Nunca use o índice do array como `key` se a ordem dos itens puder mudar.**
+   
+### Como Executar o Projeto
 
-## Conceitos Fundamentais Revisados
+1.  Certifique-se de ter instalado as dependências com `npm install`.
+
+2.  Inicie o servidor de desenvolvimento Vite:
+
+```bash
+npm run dev
+```
+
+3.  Abra seu navegador e acesse o endereço fornecido pelo Vite (geralmente `http://localhost:5173`).
+
+Você verá a página de produtos funcionando! Qualquer alteração que você fizer nos arquivos `.jsx` será refletida quase instantaneamente no navegador graças ao HMR do Vite.
+
+## 5. Conceitos Fundamentais Revisados
 
 *   **Componentes Funcionais:** Funções JavaScript que retornam JSX.
 
@@ -344,20 +358,7 @@ export default App;
 
 *   **Vite e SWC:** Ferramentas que tornam o desenvolvimento rápido e eficiente.
 
-## Como Executar o Projeto
-
-1.  Certifique-se de ter instalado as dependências com `npm install`.
-
-2.  Inicie o servidor de desenvolvimento Vite:
-    ```bash
-    npm run dev
-    ```
-
-3.  Abra seu navegador e acesse o endereço fornecido pelo Vite (geralmente `http://localhost:5173`).
-
-Você verá a página de produtos funcionando! Qualquer alteração que você fizer nos arquivos `.jsx` será refletida quase instantaneamente no navegador graças ao HMR do Vite.
-
-## Próximos Passos
+### Próximos Passos
 
 Este projeto é apenas o começo! A partir daqui, vamos estudar conceitos mais avançados do React, a saber:
 
@@ -375,6 +376,6 @@ Este projeto é apenas o começo! A partir daqui, vamos estudar conceitos mais a
 
 Espero que esta aula tenha fornecido uma introdução clara e prática ao mundo do ReactJS! Até a próxima aula!
 
-## Conclusão
+## 6. Conclusão
 
 Neste primeiro contato com o React, você aprendeu os conceitos fundamentais da biblioteca, como criar componentes funcionais, passar props e renderizar listas. Além disso, conheceu ferramentas modernas, como Vite e SWC, que tornam o desenvolvimento mais rápido e eficiente. Com essa base, você está pronto para explorar recursos mais avançados e construir aplicações web dinâmicas e interativas.
