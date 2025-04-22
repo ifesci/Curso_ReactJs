@@ -1,9 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
 
-dotenv.config();
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_API_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
+if (!supabaseUrl || !supabaseKey) {
+    console.error('Credenciais do Supabase não configuradas. Verifique o arquivo .env');
+}
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default supabase;
