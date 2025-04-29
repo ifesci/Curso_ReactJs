@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import CardsGrid from "../components/CardsGrid";
 import productService from '../services/productService';
 import { NavLink } from 'react-router-dom';
+import Pagination from '../components/Pagination';
 
 const PRODUCTS_PER_PAGE = 8;
 
@@ -21,6 +22,13 @@ const ProductsPage = ({ onAddToCart }) => {
     queryFn: () => productService.getProducts(currentPage, PRODUCTS_PER_PAGE),
     keepPreviousData: true,
   });
+
+  // Manipulador para mudança de página
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    // Rolar para o topo da página
+    window.scrollTo(0, 0);
+  };
 
   // Renderização condicional para estados de carregamento e erro
   if (isLoading) {
@@ -64,43 +72,11 @@ const ProductsPage = ({ onAddToCart }) => {
       />
 
       {/* Componente de paginação */}
-      <nav>
-        <ul className="pagination justify-content-center mt-4">
-          {/* Botão Anterior */}
-          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <button
-              className="page-link"
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-          </li>
-
-          {/* Números de página */}
-          {[...Array(totalPages).keys()].map(number => (
-            <li
-              key={number + 1}
-              className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
-              <button
-                className="page-link"
-                onClick={() => setCurrentPage(number + 1)}>
-                {number + 1}
-              </button>
-            </li>
-          ))}
-
-          {/* Botão Próximo */}
-          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-            <button
-              className="page-link"
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}>
-              Próximo
-            </button>
-          </li>
-        </ul>
-      </nav>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
