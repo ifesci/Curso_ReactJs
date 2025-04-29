@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import productService from '../services/productService';
+import { toast } from 'react-hot-toast';
 
 const CreateProductPage = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const [product, setProduct] = useState({
         title: '',
@@ -18,11 +19,17 @@ const CreateProductPage = () => {
     const createProductMutation = useMutation({
         mutationFn: productService.createProduct,
         onSuccess: () => {
-            alert('Produto criado com sucesso!');
+            toast.success('Produto criado com sucesso!', {
+                duration: 2000,
+                icon: '✅',
+            });
             navigate('/produtos');
         },
         onError: (error) => {
-            alert(`Erro ao criar produto: ${error.message}`);
+            toast.error(`Erro ao criar produto: ${error.message}`, {
+                duration: 3000,
+                icon: '❌',
+            });
         }
     });
 
@@ -146,7 +153,7 @@ const CreateProductPage = () => {
                                     />
                                 </div>
                             )}
-                            <div className="d-flex">        
+                            <div className="d-flex">
                                 <button
                                     type="submit"
                                     className="btn btn-success me-2"
