@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import productService from '../services/productService';
+import productService from '@services/productService';
 import { toast } from 'react-hot-toast';
 
 const CreateProductPage = () => {

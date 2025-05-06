@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card from "@components/Card";
 
 const CardsGrid = ({ title, items, cols = 4, onAddToCart }) => {
   const colClass = `row-cols-1 row-cols-md-${Math.max(1, Math.floor(cols / 2))} row-cols-lg-${cols}`;

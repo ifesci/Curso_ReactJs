@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import CardsGrid from "../components/CardsGrid";
-import productService from '../services/productService';
+import CardsGrid from "@components/CardsGrid";
+import productService from '@services/productService';
 import { NavLink } from 'react-router-dom';
-import Pagination from '../components/Pagination';
+import Pagination from '@components/Pagination';
 
 const PRODUCTS_PER_PAGE = 8;
 

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import CardsGrid from "../components/CardsGrid";
-import productService from '../services/productService';
+import CardsGrid from "@components/CardsGrid";
+import productService from '@services/productService';
 
 const HomePage = ({ onAddToCart }) => {
   const { data, isLoading, isError } = useQuery({

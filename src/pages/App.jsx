@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import HomePage from './HomePage';
-import ProductsPage from './ProductsPage';
-import CreateProductPage from './CreateProductPage';
+import Footer from "@components/Footer";
+import Header from "@components/Header";
+import HomePage from '@pages/HomePage';
+import ProductsPage from '@pages/ProductsPage';
+import CreateProductPage from '@pages/CreateProductPage';
 
 function App() {
   const [cartItemCount, setCartItemCount] = useState(0);
