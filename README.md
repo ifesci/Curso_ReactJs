@@ -22,7 +22,7 @@ O curso está dividido em módulos sequenciais, cada um construindo sobre os con
 - [Aula 1](README-AULA-1.md) - Fundamentos do React e criação de componentes básicos
 - [Aula 2](README-AULA-2.md) - Estado, eventos e navegação entre páginas
 - [Aula 3](README-AULA-3.md) - Integração com banco de dados, CRUD e paginação
-- [Aula 3.1](README-AULA-3.1.md) - Implementação de autenticação e melhorias na estrutura do projeto
+- [Aula 4](README-AULA-4.md) - Implementação de autenticação e gerenciamento de produtos e usuários
 
 ## Tecnologias Utilizadas
 
