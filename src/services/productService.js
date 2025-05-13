@@ -1,7 +1,7 @@
 import supabase from './supabase';
 
 const productService = {
-  async getProducts(page = 1, limit = 12) {
+  async getProductsByPage(page = 1, limit = 12) {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
     
