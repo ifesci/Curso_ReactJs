@@ -18,7 +18,9 @@ const Card = ({ image, title, description, price, onAddToCartClick }) => {
             alt={title}
             style={{ objectFit: 'cover', height: '100%', width: '100%' }}
             onError={(e) => {
-              e.target.src = 'https://via.placeholder.com/300x200?text=Imagem+Indisponível';
+              e.target.src = 'https://placehold.co/300x200?text=Imagem+Indisponível';
+              //TODO: resolver para mostrar imagem local
+              //e.target.src = require('@assets/img/NoImage300x200.svg').default;
             }}
           />
         </div>
