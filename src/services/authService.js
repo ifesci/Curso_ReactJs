@@ -1,4 +1,3 @@
-// src/services/authService.js
 import supabase from '@services/supabase';
 
 const authService = {
@@ -7,7 +6,6 @@ const authService = {
     },
 
     async logout() {
-        // Limpar o cache do React Query antes de fazer logout
         if (window.queryClient) {
             window.queryClient.clear();
         }
@@ -31,10 +29,7 @@ const authService = {
                 data: metadata
             }
         });
-        
         if (error) throw error;
-        
-        // Se o registro for bem-sucedido, criar um perfil para o usuário
         if (data.user) {
             try {
                 await supabase
@@ -48,10 +43,8 @@ const authService = {
                     }]);
             } catch (profileError) {
                 console.error("Erro ao criar perfil:", profileError);
-                // Não interrompe o fluxo se falhar a criação do perfil
             }
         }
-        
         return { data, error };
     }
 }

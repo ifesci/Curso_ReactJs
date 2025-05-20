@@ -1,4 +1,3 @@
-// src/pages/auth/RegisterPage.jsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -15,7 +14,6 @@ const RegisterPage = () => {
         confirm: '',
     });
     const [errors, setErrors] = useState({});
-    
     const registerMutation = useMutation({
         mutationFn: authService.registerUser,
         onSuccess: () => {
@@ -31,15 +29,12 @@ const RegisterPage = () => {
                 duration: 5000
             }),
     });
-    
     const handleChange = e => {
         const { name, value } = e.target;
         setUser(prev => ({ ...prev, [name]: value }));
         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
-    
     const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
-    
     const validateForm = () => {
         const newErrors = {};
         if (!user.full_name.trim()) newErrors.full_name = 'O nome é obrigatório';
@@ -53,15 +48,13 @@ const RegisterPage = () => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-    
     const handleSubmit = e => {
         e.preventDefault();
         if (validateForm()) {
-            const { confirm: _confirm, ...payload } = user; // remove confirm
+            const { confirm: _confirm, ...payload } = user;
             registerMutation.mutate(payload);
         }
     };
-    
     return (
         <div className="row justify-content-center">
             <div className="col-md-8 col-lg-6">
@@ -69,10 +62,8 @@ const RegisterPage = () => {
                     <div className="card-header text-bg-light">
                         <h2 className="mb-0">Criar Conta</h2>
                     </div>
-
                     <div className="card-body">
                         <form onSubmit={handleSubmit} noValidate>
-                            {/* Nome */}
                             <div className="mb-3">
                                 <label htmlFor="full_name" className="form-label">
                                     Nome completo
@@ -87,7 +78,6 @@ const RegisterPage = () => {
                                     <div className="invalid-feedback">{errors.full_name}</div>
                                 )}
                             </div>
-                            {/* E-mail */}
                             <div className="mb-3">
                                 <label htmlFor="email" className="form-label">
                                     E-mail
@@ -103,7 +93,6 @@ const RegisterPage = () => {
                                     <div className="invalid-feedback">{errors.email}</div>
                                 )}
                             </div>
-                            {/* Telefone */}
                             <div className="mb-3">
                                 <label htmlFor="phone" className="form-label">
                                     Telefone
@@ -116,10 +105,8 @@ const RegisterPage = () => {
                                     className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
                                     value={user.phone}
                                     onChange={e => {
-                                        // Formatar o telefone manualmente
                                         const value = e.target.value.replace(/\D/g, '');
                                         let formattedValue = '';
-
                                         if (value.length <= 2) {
                                             formattedValue = value.length ? `(${value}` : '';
                                         } else if (value.length <= 7) {
@@ -127,7 +114,6 @@ const RegisterPage = () => {
                                         } else {
                                             formattedValue = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7, 11)}`;
                                         }
-
                                         const { name } = e.target;
                                         setUser(prev => ({ ...prev, [name]: formattedValue }));
                                         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
@@ -137,7 +123,6 @@ const RegisterPage = () => {
                                     <div className="invalid-feedback">{errors.phone}</div>
                                 )}
                             </div>
-                            {/* Senha */}
                             <div className="mb-3">
                                 <label htmlFor="password" className="form-label">
                                     Senha
@@ -153,7 +138,6 @@ const RegisterPage = () => {
                                     <div className="invalid-feedback">{errors.password}</div>
                                 )}
                             </div>
-                            {/* Confirmar */}
                             <div className="mb-3">
                                 <label htmlFor="confirm" className="form-label">
                                     Confirmar senha
@@ -169,7 +153,6 @@ const RegisterPage = () => {
                                     <div className="invalid-feedback">{errors.confirm}</div>
                                 )}
                             </div>
-                            {/* Ações */}
                             <div className="d-flex">
                                 <button
                                     type="submit"

@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import supabase from '@services/supabase';
 
@@ -10,8 +9,6 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const user = session?.user || null;
     const isAdmin = profile?.is_admin || false;
-
-    // Buscar o perfil do usuário quando o usuário estiver autenticado
     useEffect(() => {
         const fetchProfile = async () => {
             if (user) {
@@ -20,8 +17,7 @@ const AuthProvider = ({ children }) => {
                         .from('profiles')
                         .select('*')
                         .eq('id', user.id)
-                        .single();
-                    
+                        .single();                    
                     if (error) {
                         console.error('Erro ao buscar perfil:', error);
                         setProfile(null);
@@ -39,24 +35,20 @@ const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
         };
-
         fetchProfile();
     }, [user]);
-
     useEffect(() => {
         const { data: listener } = supabase.auth.onAuthStateChange((event, sess) => {
-            // Quando o evento for SIGNED_OUT, limpar o perfil e a sessão
             if (event === 'SIGNED_OUT') {
                 setProfile(null);
                 setSession(null);
             } else {
                 setSession(sess);
-                setLoading(true); // Reiniciar o loading quando o estado de autenticação mudar
+                setLoading(true);
             }
         });
         return () => listener.subscription.unsubscribe();
     }, []);
-
     const value = { session, user, isAdmin, loading, profile };
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

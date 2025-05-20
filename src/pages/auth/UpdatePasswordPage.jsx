@@ -1,4 +1,3 @@
-// src/pages/auth/UpdatePasswordPage.jsx
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate, Link } from 'react-router-dom';
@@ -9,17 +8,14 @@ import { useAuth } from '@contexts/AuthContext';
 const UpdatePasswordPage = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
-    
     const [form, setForm] = useState({
         password: '',
         confirm: '',
     });
     const [errors, setErrors] = useState({});
-    
     useEffect(() => {
         if (user === null) navigate('/login', { replace: true });
     }, [user, navigate]);
-    
     const updateMutation = useMutation({
         mutationFn: newPassword =>
             supabase.auth.updateUser({ password: newPassword }),
@@ -37,13 +33,11 @@ const UpdatePasswordPage = () => {
             });
         },
     });
-    
     const handleChange = e => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
-    
     const validate = () => {
         const newErrors = {};
         if (form.password.length < 6)
@@ -53,12 +47,10 @@ const UpdatePasswordPage = () => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-    
     const handleSubmit = e => {
         e.preventDefault();
         if (validate()) updateMutation.mutate(form.password);
     };
-    
     return (
         <div className="row justify-content-center">
             <div className="col-md-8 col-lg-6">
@@ -68,7 +60,6 @@ const UpdatePasswordPage = () => {
                     </div>
                     <div className="card-body">
                         <form onSubmit={handleSubmit} noValidate>
-                            {/* Nova senha */}
                             <div className="mb-3">
                                 <label htmlFor="password" className="form-label">
                                     Nova senha
@@ -84,7 +75,6 @@ const UpdatePasswordPage = () => {
                                     <div className="invalid-feedback">{errors.password}</div>
                                 )}
                             </div>
-                            {/* Confirmar */}
                             <div className="mb-3">
                                 <label htmlFor="confirm" className="form-label">
                                     Confirmar senha
@@ -100,7 +90,6 @@ const UpdatePasswordPage = () => {
                                     <div className="invalid-feedback">{errors.confirm}</div>
                                 )}
                             </div>
-                            {/* Ações */}
                             <div className="d-flex">
                                 <button
                                     type="submit"

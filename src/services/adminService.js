@@ -1,5 +1,5 @@
-// src/services/adminService.js
 import supabase from '@services/supabase';
+import avatar40x40 from '@assets/img/avatar40x40.svg';
 
 const adminService = {
     async getUsersByPage(page = 1, limit = 12) {
@@ -14,13 +14,11 @@ const adminService = {
             console.error('Erro ao listar usuários:', error);
             throw error;
         }
-        // Atualiza a URL do avatar diretamente com a URL pública
         for (const user of data) {
             if (user.avatar_url) {
-                // Obtém a URL pública do avatar diretamente sem precisar de uma URL assinada
                 user.avatar_url = supabase.storage.from('avatars').getPublicUrl(user.avatar_url).data.publicUrl;
             } else {
-                user.avatar_url = 'https://placehold.co/40?text=A';  // Caso não tenha avatar, usa um placeholder
+                user.avatar_url = {avatar40x40};
             }
         }
         return {
@@ -29,13 +27,11 @@ const adminService = {
             totalPages: Math.ceil(count / limit)
         };
     },
-
     async setAdmin(id, makeAdmin) {
         const { error } = await supabase
             .from('profiles')
             .update({ is_admin: makeAdmin })
             .eq('id', id);
-
         if (error) {
             console.error('Erro ao atualizar privilégio admin:', error);
             throw error;
@@ -47,7 +43,6 @@ const adminService = {
         const { error } = await supabase.rpc('delete_user', {
             user_id: id,
         });
-
         if (error) {
             console.error('Erro ao excluir usuário:', error);
             throw error;

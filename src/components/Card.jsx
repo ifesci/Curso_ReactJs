@@ -1,30 +1,20 @@
-const Card = ({ image, title, description, price, onAddToCartClick }) => {
-  // Função para formatar o preço em formato de moeda brasileira
-  const formatPrice = (value) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value);
-  };
+import placeholderIndisponivel from '@assets/img/placeholder3x2.svg';
+import { formatPrice } from '../assets/js/util';
 
+const Card = ({ image, title, description, price, onAddToCartClick }) => {
   return (
     <div className="col">
       <div className="card h-100">
-        {/* Área da imagem com altura fixa */}
         <div style={{ height: '200px', overflow: 'hidden' }}>
-          <img 
-            src={image} 
-            className="card-img-top" 
+          <img
+            src={image}
+            className="card-img-top"
             alt={title}
             style={{ objectFit: 'cover', height: '100%', width: '100%' }}
             onError={(e) => {
-              e.target.src = 'https://placehold.co/300x200?text=Imagem+Indisponível';
-              //TODO: resolver para mostrar imagem local
-              //e.target.src = require('@assets/img/NoImage300x200.svg').default;
-            }}
-          />
+              e.target.src = placeholderIndisponivel;
+            }} />
         </div>
-        
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">{title}</h5>
           <p className="card-text flex-grow-1">{description}</p>
@@ -34,12 +24,10 @@ const Card = ({ image, title, description, price, onAddToCartClick }) => {
             </p>
           </div>
         </div>
-        
         <div className="card-footer">
-          <button 
-            onClick={onAddToCartClick} 
-            className="btn btn-success w-100"
-          >
+          <button
+            onClick={onAddToCartClick}
+            className="btn btn-success w-100">
             <i className="bi-cart-plus me-2"></i>
             Adicionar ao Carrinho
           </button>

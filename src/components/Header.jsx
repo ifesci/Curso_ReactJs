@@ -1,23 +1,19 @@
-// src/components/Header.jsx
 import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@contexts/AuthContext';
 import authService from '@services/authService';
 import profileService from '@services/profileService';
+import avatar40 from '@assets/img/avatar40x40.svg';
 
 const Header = ({ cartCount = 0 }) => {
   const { user, isAdmin } = useAuth();
-  const [avatarUrl, setAvatarUrl] = useState('https://placehold.co/40?text=A');  
-
-  // Buscar o perfil do usuário para obter o avatar
+  const [avatarUrl, setAvatarUrl] = useState(avatar40);
   useEffect(() => {
     if (user) {
       const fetchProfile = async () => {
         try {
-          // Limpar o avatar ao trocar de usuário
-          setAvatarUrl('https://placehold.co/40?text=A');
-          
+          setAvatarUrl(avatar40);
           const profile = await profileService.getProfile();
           if (profile.avatar_url) {
             setAvatarUrl(profile.avatar_url);
@@ -28,10 +24,9 @@ const Header = ({ cartCount = 0 }) => {
       };
       fetchProfile();
     } else {
-      // Resetar o avatar quando não houver usuário
-      setAvatarUrl('https://placehold.co/40?text=A');
+      setAvatarUrl(avatar40);
     }
-  }, [user?.id]); // Dependência no ID do usuário para garantir atualização quando mudar
+  }, [user]);
 
   return (
     <>

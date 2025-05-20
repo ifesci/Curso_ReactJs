@@ -1,4 +1,3 @@
-// src/pages/admin/AdminProductsPage.jsx
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +12,6 @@ const AdminProductsPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-
-    // Lista de produtos
     const {
         data,
         isLoading: loadingProducts,
@@ -24,16 +21,11 @@ const AdminProductsPage = () => {
         queryKey: ['products', currentPage],
         queryFn: () => productService.getProductsByPage(currentPage, PRODUCTS_PER_PAGE),
         keepPreviousData: true,
-    });    
-
-    // Manipulador para mudança de página
+    });
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
-        // Rolar para o topo da página
         window.scrollTo(0, 0);
     };
-
-    // Mutação para excluir produto
     const deleteMutation = useMutation({
         mutationFn: productService.deleteProduct,
         onSuccess: () => {
@@ -42,19 +34,14 @@ const AdminProductsPage = () => {
         },
         onError: (err) => toast.error(`Erro: ${err.message}`, { icon: '❌' }),
     });
-
-    // Função para excluir produto
     const handleDelete = (id) => {
         if (window.confirm('Excluir produto? Esta ação é irreversível.')) {
             deleteMutation.mutate(id);
         }
     };
-
-    // Função para editar produto
     const handleEdit = (product) => {
         navigate(`/admin/products/edit/${product.id}`, { state: { product } });
     };
-
     if (isError) {
         return (
             <div className="alert alert-danger mt-4">
@@ -62,7 +49,6 @@ const AdminProductsPage = () => {
             </div>
         );
     }
-
     return (
         <div className="row justify-content-center">
             <div className="col-12 mb-3">

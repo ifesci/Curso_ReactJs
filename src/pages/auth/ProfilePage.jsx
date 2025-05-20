@@ -1,10 +1,11 @@
-// src/pages/auth/ProfilePage.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import profileService from '@services/profileService';
 import { useAuth } from '@contexts/AuthContext';
+import avatar40x40 from '@assets/img/avatar40x40.svg';
+import avatar150x150 from '@assets/img/avatar150x150.svg';
 
 const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
 
@@ -13,34 +14,28 @@ const ProfilePage = () => {
     const queryClient = useQueryClient();
     const fileRef = useRef(null);
     const { user } = useAuth();
-    // obtém dados do perfil do usuário logado
     const { data: profile, isLoading } = useQuery({
         queryKey: ['profile', user?.id],
         queryFn: profileService.getProfile,
-        // Não executar a consulta se não houver usuário logado
         enabled: !!user,
-        // Não usar cache entre sessões de usuários diferentes
         staleTime: 0
     });
-    // estado inicial do formulário
     const [form, setForm] = useState({
         full_name: '',
         phone: '',
-        avatar_file: null, // File | null
-        avatar_preview: 'https://placehold.co/40?text=Avatar', // data URL | bucket path
+        avatar_file: null,
+        avatar_preview: { avatar40x40 },
     });
     const [errors, setErrors] = useState({});
-    // sincroniza os dados do perfil com o estado do formulário
     useEffect(() => {
         if (!profile) return;
         setForm(f => ({
             ...f,
             full_name: profile.full_name ?? '',
             phone: profile.phone ?? '',
-            avatar_preview: profile.avatar_url || 'https://placehold.co/150?text=Avatar',    // já vem string
+            avatar_preview: profile.avatar_url || avatar150x150,
         }));
     }, [profile]);
-    // mutation para atualizar o perfil do usuário
     const updateMutation = useMutation({
         mutationFn: profileService.updateProfile,
         onSuccess: () => {
@@ -50,24 +45,20 @@ const ProfilePage = () => {
         onError: err =>
             toast.error(`Erro: ${err.message}`, { icon: '❌' }),
     });
-    // helpers
     const handleChange = e => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
-    // função para lidar com a seleção de arquivos
     const handleFileSelect = e => {
         const file = e.target.files?.[0];
         if (!file) return;
         setForm(prev => ({ ...prev, avatar_file: file }));
-        // preview
         const reader = new FileReader();
         reader.onload = ev =>
             setForm(prev => ({ ...prev, avatar_preview: ev.target.result }));
         reader.readAsDataURL(file);
     };
-    // validação básica do formulário
     const validate = () => {
         const newErrors = {};
         if (!form.full_name.trim())
@@ -77,7 +68,6 @@ const ProfilePage = () => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-    // submit
     const handleSubmit = e => {
         e.preventDefault();
         if (!validate()) return;
@@ -87,7 +77,6 @@ const ProfilePage = () => {
             file: form.avatar_file,
         });
     };
-    // user interface
     if (isLoading) {
         return (
             <div className="d-flex justify-content-center mt-5">
@@ -95,11 +84,9 @@ const ProfilePage = () => {
             </div>
         );
     }
-    // se usuário não estiver logado, retorna vazio
     if (!user) {
-        return null; // já existe redireção em nível de rota protegida
+        return null;
     }
-    // se estiver tudo certo, retorna o formulário
     return (
         <div className="row justify-content-center">
             <div className="col-md-10 col-lg-8">
@@ -109,12 +96,10 @@ const ProfilePage = () => {
                     </div>
                     <div className="card-body">
                         <form onSubmit={handleSubmit} noValidate>
-                            {/* avatar */}
                             <div className="mb-4 text-center">
                                 <img
                                     src={
-                                        form.avatar_preview ||
-                                        'https://placehold.co/150?text=Avatar&font=roboto'
+                                        form.avatar_preview || avatar150x150
                                     }
                                     alt="Avatar"
                                     className="rounded-circle mb-3"
@@ -133,7 +118,6 @@ const ProfilePage = () => {
                                     ref={fileRef}
                                     onChange={handleFileSelect} />
                             </div>
-                            {/* nome completo */}
                             <div className="mb-3">
                                 <label htmlFor="full_name" className="form-label">
                                     Nome completo
@@ -149,7 +133,6 @@ const ProfilePage = () => {
                                     <div className="invalid-feedback">{errors.full_name}</div>
                                 )}
                             </div>
-                            {/* telefone */}
                             <div className="mb-3">
                                 <label htmlFor="phone" className="form-label">
                                     Telefone
@@ -162,10 +145,8 @@ const ProfilePage = () => {
                                     className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
                                     value={form.phone}
                                     onChange={e => {
-                                        // Formatar o telefone manualmente
                                         const value = e.target.value.replace(/\D/g, '');
                                         let formattedValue = '';
-
                                         if (value.length <= 2) {
                                             formattedValue = value.length ? `(${value}` : '';
                                         } else if (value.length <= 7) {
@@ -173,16 +154,13 @@ const ProfilePage = () => {
                                         } else {
                                             formattedValue = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7, 11)}`;
                                         }
-
                                         setForm(prev => ({ ...prev, phone: formattedValue }));
                                         if (errors.phone) setErrors(prev => ({ ...prev, phone: '' }));
-                                    }}
-                                />
+                                    }} />
                                 {errors.phone && (
                                     <div className="invalid-feedback">{errors.phone}</div>
                                 )}
                             </div>
-                            {/* ações */}
                             <div className="d-flex">
                                 <button
                                     type="submit"

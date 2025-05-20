@@ -3,19 +3,18 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import productService from '@services/productService';
 import { toast } from 'react-hot-toast';
+import indisponivel3x2 from '@assets/img/indisponivel3x2.svg';
+import invalida3x2 from '@assets/img/invalida3x2.svg';
 
 const CreateProductPage = () => {
     const navigate = useNavigate();
-
     const [product, setProduct] = useState({
         title: '',
         description: '',
         price: '',
         image_url: ''
     });
-
     const [errors, setErrors] = useState({});
-
     const createProductMutation = useMutation({
         mutationFn: productService.createProduct,
         onSuccess: () => {
@@ -32,7 +31,6 @@ const CreateProductPage = () => {
             });
         }
     });
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProduct(prev => ({
@@ -46,7 +44,6 @@ const CreateProductPage = () => {
             }));
         }
     };
-
     const validateForm = () => {
         const newErrors = {};
         if (!product.title.trim()) {
@@ -68,7 +65,6 @@ const CreateProductPage = () => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
@@ -79,7 +75,6 @@ const CreateProductPage = () => {
             createProductMutation.mutate(productToSave);
         }
     };
-
     return (
         <div className="row justify-content-center">
             <div className="col-md-8">
@@ -122,8 +117,7 @@ const CreateProductPage = () => {
                                     id="price"
                                     name="price"
                                     value={product.price}
-                                    onChange={handleChange}
-                                />
+                                    onChange={handleChange} />
                                 {errors.price && <div className="invalid-feedback">{errors.price}</div>}
                             </div>
                             <div className="mb-3">
@@ -135,8 +129,7 @@ const CreateProductPage = () => {
                                     name="image_url"
                                     value={product.image_url}
                                     onChange={handleChange}
-                                    placeholder="https://..."
-                                />
+                                    placeholder={indisponivel3x2} />
                                 {errors.image_url && <div className="invalid-feedback">{errors.image_url}</div>}
                             </div>
                             {product.image_url && (
@@ -148,7 +141,7 @@ const CreateProductPage = () => {
                                         className="img-thumbnail"
                                         style={{ maxHeight: '200px' }}
                                         onError={(e) => {
-                                            e.target.src = 'https://via.placeholder.com/300x200?text=Imagem+Inválida';
+                                            e.target.src = { invalida3x2 };
                                         }}
                                     />
                                 </div>

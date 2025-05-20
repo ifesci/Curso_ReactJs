@@ -1,4 +1,3 @@
-// src/pages/admin/AdminUsersPage.jsx
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
@@ -11,8 +10,7 @@ const USERS_PER_PAGE = 12;
 const AdminUsersPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const queryClient = useQueryClient();
-    const { user: currentUser } = useAuth(); // evita excluir/promover a si mesmo
-    // lista de usuários
+    const { user: currentUser } = useAuth();
     const {
         data,
         isLoading: loadingUsers,
@@ -22,8 +20,6 @@ const AdminUsersPage = () => {
         queryKey: ['profiles', currentPage],
         queryFn: () => adminService.getUsersByPage(currentPage, USERS_PER_PAGE),
     });
-    
-    // mutação para promover/despromover usuários
     const promoteMutation = useMutation({
         mutationFn: ({ id, makeAdmin }) =>
             adminService.setAdmin(id, makeAdmin),
@@ -36,15 +32,10 @@ const AdminUsersPage = () => {
         },
         onError: err => toast.error(`Erro: ${err.message}`, { icon: '❌' }),
     });
-
-    // Manipulador para mudança de página
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
-        // Rolar para o topo da página
         window.scrollTo(0, 0);
     };
-
-    // mutação para excluir usuários
     const deleteMutation = useMutation({
         mutationFn: adminService.deleteUser,
         onSuccess: () => {
@@ -53,13 +44,10 @@ const AdminUsersPage = () => {
         },
         onError: err => toast.error(`Erro: ${err.message}`, { icon: '❌' }),
     });
-    // busca local
     const [search, setSearch] = useState('');
-    // Verificar se data existe antes de filtrar
     const filteredUsers = data?.profiles ? data.profiles.filter(u =>
         u.full_name.toLowerCase().includes(search.toLowerCase())
     ) : [];
-    // user interface
     if (isError) {
         return (
             <div className="alert alert-danger mt-4">
@@ -67,7 +55,6 @@ const AdminUsersPage = () => {
             </div>
         );
     }
-    // se deu tudo certo, renderiza a tabela de usuários
     return (
         <div className="row justify-content-center">
             <div className="col-12">
@@ -81,7 +68,6 @@ const AdminUsersPage = () => {
                             value={search}
                             onChange={e => setSearch(e.target.value)} />
                     </div>
-
                     <div className="card-body p-0">
                         {loadingUsers ? (
                             <div className="text-center my-5">
@@ -109,14 +95,12 @@ const AdminUsersPage = () => {
                                                 </td>
                                             </tr>
                                         )}
-
                                         {filteredUsers.map(u => {
                                             const isSelf = u.id === currentUser?.id;
                                             const busyRow =
                                                 (promoteMutation.isPending &&
                                                     promoteMutation.variables?.id === u.id) ||
                                                 (deleteMutation.isPending && deleteMutation.variables === u.id);
-
                                             return (
                                                 <tr key={u.id}>
                                                     <td className="one-line-cell px-3">

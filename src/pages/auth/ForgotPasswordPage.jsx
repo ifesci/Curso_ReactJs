@@ -9,7 +9,6 @@ const ForgotPasswordPage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
-    
     const resetMutation = useMutation({
         mutationFn: authService.forgotPassword,
         onSuccess: () => {
@@ -25,9 +24,7 @@ const ForgotPasswordPage = () => {
                 duration: 5000,
             }),
     });
-    
     const emailRegex = /.+@.+\..+/;
-    
     const validate = () => {
         if (!emailRegex.test(email)) {
             setError('E-mail inválido');
@@ -36,12 +33,10 @@ const ForgotPasswordPage = () => {
         setError('');
         return true;
     };
-    
     const handleSubmit = e => {
         e.preventDefault();
         if (validate()) resetMutation.mutate(email);
     };
-    
     return (
         <div className="row justify-content-center">
             <div className="col-md-8 col-lg-6">

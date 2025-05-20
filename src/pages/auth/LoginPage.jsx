@@ -9,14 +9,12 @@ const LoginPage = () => {
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [generalError, setGeneralError] = useState('');
-
     const handleChange = e => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
         if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
         if (generalError) setGeneralError('');
     };
-
     const validateForm = () => {
         const newErrors = {};
         if (!/.+@.+\..+/.test(form.email)) newErrors.email = 'E-mail inválido';
@@ -24,17 +22,14 @@ const LoginPage = () => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-
     const handleSubmit = async e => {
         e.preventDefault();
         if (!validateForm()) return;
-        
         setIsLoading(true);
         const { error } = await authService.login(form);
         setIsLoading(false);
-        
         if (error) return setGeneralError(error.message);
-        nav('/'); // redireciona para a página inicial quando logou
+        nav('/');
     };
 
     return (
@@ -44,10 +39,8 @@ const LoginPage = () => {
                     <div className="card-header text-bg-light">
                         <h2 className="mb-0">Entrar</h2>
                     </div>
-
                     <div className="card-body">
                         <form onSubmit={handleSubmit} noValidate>
-                            {/* E-mail */}
                             <div className="mb-3">
                                 <label htmlFor="email" className="form-label">
                                     E-mail
@@ -64,8 +57,6 @@ const LoginPage = () => {
                                     <div className="invalid-feedback">{errors.email}</div>
                                 )}
                             </div>
-                            
-                            {/* Senha */}
                             <div className="mb-3">
                                 <label htmlFor="password" className="form-label">
                                     Senha
@@ -82,12 +73,9 @@ const LoginPage = () => {
                                     <div className="invalid-feedback">{errors.password}</div>
                                 )}
                             </div>
-                            
                             {generalError && (
                                 <div className="alert alert-danger mb-3">{generalError}</div>
                             )}
-                            
-                            {/* Ações */}
                             <div className="d-flex">
                                 <button
                                     type="submit"

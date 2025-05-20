@@ -1,4 +1,3 @@
-// src/pages/admin/AdminCreateProductPage.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -19,10 +18,7 @@ const AdminCreateProductPage = () => {
         image_preview: '',
         image_url: ''
     });
-
     const [errors, setErrors] = useState({});
-
-    // Se for um produto para editar, inicializa o estado com os dados do produto
     useEffect(() => {
         if (productToEdit) {
             setProduct({
@@ -33,7 +29,6 @@ const AdminCreateProductPage = () => {
             });
         }
     }, [productToEdit]);
-
     const createProductMutation = useMutation({
         mutationFn: productService.createProduct,
         onSuccess: () => {
@@ -44,7 +39,6 @@ const AdminCreateProductPage = () => {
             toast.error(`Erro ao criar produto: ${error.message}`, { icon: '❌' });
         }
     });
-
     const updateProductMutation = useMutation({
         mutationFn: ({ id, ...fields }) => productService.updateProduct(id, fields),
         onSuccess: () => {
@@ -59,7 +53,6 @@ const AdminCreateProductPage = () => {
             toast.error(`Erro ao atualizar produto: ${error.message}`, { icon: '❌' });
         }
     });
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProduct((prev) => ({ ...prev, [name]: value }));
@@ -67,13 +60,11 @@ const AdminCreateProductPage = () => {
             setErrors((prev) => ({ ...prev, [name]: '' }));
         }
     };
-
     const handleFileSelect = e => {
         const file = e.target.files?.[0];
         if (!file) return;
         setProduct(p => ({ ...p, image_file: file, image_preview: URL.createObjectURL(file), image_url: '' }));
     };
-
     const validateForm = () => {
         const newErrors = {};
         if (!product.title.trim()) {
@@ -93,21 +84,17 @@ const AdminCreateProductPage = () => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-
     const handleSubmit = async e => {
         e.preventDefault();
         if (!validateForm()) return;
-
         try {
             let path = product.image_url;
             if (product.image_file) {
                 path = await productService.uploadImage(product.image_file);
             }
-
             const payload = { ...product, image_url: path, price: parseFloat(product.price) };
             delete payload.image_file;
             delete payload.image_preview;
-
             if (productToEdit) {
                 await updateProductMutation.mutateAsync({ id: productToEdit.id, ...payload });
             } else {
@@ -117,7 +104,6 @@ const AdminCreateProductPage = () => {
             toast.error(`Erro ao salvar: ${err.message}`, { icon: '❌' });
         }
     };
-
     return (
         <div className="row justify-content-center">
             <div className="col-md-8">
@@ -168,17 +154,15 @@ const AdminCreateProductPage = () => {
                                 </button>
                                 <input type="file" accept="image/*" className="d-none" ref={fileRef} onChange={handleFileSelect} />
                             </div>
-
                             {product.image_preview || product.image_url ? (
                                 <div className="mb-3 text-start">
                                     <img
                                         src={product.image_preview || product.image_url}
                                         alt="Pré-visualização"
                                         className="img-thumbnail"
-                                        style={{ maxHeight: 200 }}/>
+                                        style={{ maxHeight: 200 }} />
                                 </div>
                             ) : null}
-
                             <div className="d-flex">
                                 <button
                                     type="submit"

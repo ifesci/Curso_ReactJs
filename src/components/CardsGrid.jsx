@@ -1,4 +1,3 @@
-// src/components/CardsGrid.jsx
 import Card from "@components/Card";
 import Pagination from "@components/Pagination";
 

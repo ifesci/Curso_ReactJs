@@ -5,14 +5,13 @@ import productService from '@services/productService';
 const HomePage = ({ onAddToCart }) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['featuredProducts'],
-    queryFn: () => productService.getProducts(1, 3),
+    queryFn: () => productService.getProductsByPage(1, 3),
   });
 
   return (
     <div>
       <h1>Bem-vindo à Nossa Loja!</h1>
       <p>Confira nossos produtos em destaque:</p>
-      
       {isLoading ? (
         <p>Carregando destaques...</p>
       ) : isError ? (
@@ -26,7 +25,7 @@ const HomePage = ({ onAddToCart }) => {
         />
       )}
       <div className="mt-4 text-center">
-        <a href="/produtos" className="btn btn-primary">Ver todos os produtos</a>
+        <a href="/products" className="btn btn-primary">Ver todos os produtos</a>
       </div>
     </div>
   );
