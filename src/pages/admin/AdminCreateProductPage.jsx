@@ -25,7 +25,8 @@ const AdminCreateProductPage = () => {
                 title: productToEdit.title,
                 description: productToEdit.description,
                 price: productToEdit.price,
-                image_url: productToEdit.image_url
+                image_url: productToEdit.image_url,
+                image_preview: productToEdit.image_url
             });
             console.log('productToEdit', productToEdit);
         }
@@ -33,8 +34,13 @@ const AdminCreateProductPage = () => {
     const createProductMutation = useMutation({
         mutationFn: productService.createProduct,
         onSuccess: () => {
-            toast.success('Produto criado com sucesso!', { icon: '✅' });
-            navigate('/admin/products');
+            queryClient.invalidateQueries(['products']).then(() => {
+                toast.success('Produto criado com sucesso!', { icon: '✅0' });
+                navigate('/admin/products');
+            }
+            ).catch((error) => {
+                toast.error(`Erro ao atualizar lista de produtos: ${error.message}`, { icon: '❌' });
+            });
         },
         onError: (error) => {
             toast.error(`Erro ao criar produto: ${error.message}`, { icon: '❌' });
@@ -61,7 +67,7 @@ const AdminCreateProductPage = () => {
             setErrors((prev) => ({ ...prev, [name]: '' }));
         }
     };
-    const handleFileSelect = e => {
+    const handleFileSelect = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
         setProduct(p => ({ ...p, image_file: file, image_preview: URL.createObjectURL(file), image_url: '' }));
@@ -89,13 +95,16 @@ const AdminCreateProductPage = () => {
         e.preventDefault();
         if (!validateForm()) return;
         try {
-            let path = product.image_url;
+            const payload = {
+                title: product.title,
+                description: product.description,
+                price: parseFloat(product.price)
+            };
             if (product.image_file) {
-                path = await productService.uploadImage(product.image_file);
+                payload.image_url = await productService.uploadImage(product.image_file);
+            } else if (!productToEdit) {
+                payload.image_url = product.image_url;
             }
-            const payload = { ...product, image_url: path, price: parseFloat(product.price) };
-            delete payload.image_file;
-            delete payload.image_preview;
             if (productToEdit) {
                 await updateProductMutation.mutateAsync({ id: productToEdit.id, ...payload });
             } else {
@@ -155,10 +164,10 @@ const AdminCreateProductPage = () => {
                                 </button>
                                 <input type="file" accept="image/*" className="d-none" ref={fileRef} onChange={handleFileSelect} />
                             </div>
-                            {product.image_url ? (
+                            {product.image_url || product.image_preview ? (
                                 <div className="mb-3 text-start">
                                     <img
-                                        src={product.image_url}
+                                        src={product.image_url || product.image_preview}
                                         alt="Pré-visualização"
                                         className="img-thumbnail"
                                         style={{ maxHeight: 200 }} />

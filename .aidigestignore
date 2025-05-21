@@ -5,3 +5,4 @@ package-lock.json
 .env
 .roo
 *.log
+src/assets
