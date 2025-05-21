@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import productService from '@services/productService';
 import { formatPrice } from '@assets/js/util.js';
@@ -9,9 +9,11 @@ import Pagination from '@components/Pagination';
 const PRODUCTS_PER_PAGE = 8;
 
 const AdminProductsPage = () => {
-    const [currentPage, setCurrentPage] = useState(1);
+    const location = useLocation();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const searchParams = new URLSearchParams(location.search);
+    const currentPage = parseInt(searchParams.get('page') || '1', 10);
     const {
         data,
         isLoading: loadingProducts,
@@ -22,10 +24,9 @@ const AdminProductsPage = () => {
         queryFn: () => productService.getProductsByPage(currentPage, PRODUCTS_PER_PAGE),
         keepPreviousData: true,
     });
-    const handlePageChange = (newPage) => {
-        setCurrentPage(newPage);
+    useEffect(() => {
         window.scrollTo(0, 0);
-    };
+    }, [currentPage]);
     const deleteMutation = useMutation({
         mutationFn: productService.deleteProduct,
         onSuccess: () => {
@@ -122,8 +123,7 @@ const AdminProductsPage = () => {
                     <div className="d-flex justify-content-center mb-2">
                         <Pagination
                             currentPage={currentPage}
-                            totalPages={data?.totalPages}
-                            onPageChange={handlePageChange} />
+                            totalPages={data?.totalPages} />
                     </div>
                     <p className="small text-center m-0">
                         Mostrando página {currentPage} de {data?.totalPages}

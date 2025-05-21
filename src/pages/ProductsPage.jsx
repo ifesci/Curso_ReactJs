@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 import CardsGrid from "@components/CardsGrid";
 import productService from '@services/productService';
 
 const PRODUCTS_PER_PAGE = 8;
 
 const ProductsPage = ({ onAddToCart }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const {
     data,
     isLoading,
@@ -17,10 +20,9 @@ const ProductsPage = ({ onAddToCart }) => {
     queryFn: () => productService.getProductsByPage(currentPage, PRODUCTS_PER_PAGE),
     keepPreviousData: true,
   });
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  useEffect(() => {
     window.scrollTo(0, 0);
-  };
+  }, [currentPage]);
   if (isLoading) {
     return (
       <div className="text-center my-5">
@@ -47,8 +49,7 @@ const ProductsPage = ({ onAddToCart }) => {
         cols={4}
         onAddToCart={onAddToCart}
         currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageChange={handlePageChange} />
+        totalPages={totalPages} />
     </div>
   );
 };

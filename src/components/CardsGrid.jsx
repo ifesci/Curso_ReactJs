@@ -1,7 +1,7 @@
 import Card from "@components/Card";
 import Pagination from "@components/Pagination";
 
-const CardsGrid = ({ title, items, cols = 4, onAddToCart, currentPage, totalPages, handlePageChange }) => {
+const CardsGrid = ({ title, items, cols = 4, onAddToCart, currentPage, totalPages }) => {
   const colClass = `row-cols-1 row-cols-md-${Math.max(1, Math.ceil(cols / 2))} row-cols-lg-${cols}`;
   return (
     <section>
@@ -13,8 +13,7 @@ const CardsGrid = ({ title, items, cols = 4, onAddToCart, currentPage, totalPage
           <div className="col-12 col-md d-flex justify-content-center justify-content-md-end">
             <Pagination
               currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange} />
+              totalPages={totalPages} />
           </div>
         )}
       </div>
@@ -31,15 +30,15 @@ const CardsGrid = ({ title, items, cols = 4, onAddToCart, currentPage, totalPage
             onAddToCartClick={() => onAddToCart(item)} />
         ))}
       </div>
+      <hr />
       {totalPages > 1 && (
         <>
-          <div className="d-flex justify-content-center mb-2">
+          <div className="d-flex justify-content-end mb-2">
             <Pagination
               currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange} />
+              totalPages={totalPages} />
           </div>
-          <p className="small text-center m-0">Mostrando página {currentPage} de {totalPages}</p>
+          <p className="small text-end m-0">Mostrando página {currentPage} de {totalPages}</p>
         </>
       )}
     </section>
