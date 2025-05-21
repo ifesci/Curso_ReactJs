@@ -22,9 +22,9 @@ Nesta aula, construiremos um projeto com uma única página que exibe uma lista 
 
 * **Vite:** Uma ferramenta de build extremamente rápida para desenvolvimento web moderno. Ele oferece um servidor de desenvolvimento com Hot Module Replacement (HMR) instantâneo e otimiza o código para produção. Vite utiliza ferramentas nativas como esbuild (para pré-empacotamento de dependências) e SWC (para transpilação rápida de JavaScript/JSX).
 
-    * **Alternativa:** Create React App (CRA) era a ferramenta oficial recomendada anteriormente, mas Vite tem ganhado popularidade devido à sua velocidade superior.
+  * **Alternativa:** Create React App (CRA) era a ferramenta oficial recomendada anteriormente, mas Vite tem ganhado popularidade devido à sua velocidade superior.
 
-    * **SWC (Speedy Web Compiler):** Um compilador ultrarrápido escrito em Rust, usado pelo Vite para converter código moderno (incluindo JSX) em JavaScript compatível com navegadores. É uma alternativa mais performática ao Babel em muitos casos.
+  * **SWC (Speedy Web Compiler):** Um compilador ultrarrápido escrito em Rust, usado pelo Vite para converter código moderno (incluindo JSX) em JavaScript compatível com navegadores. É uma alternativa mais performática ao Babel em muitos casos.
 
 * **React e ReactDOM:** As bibliotecas principais para construir a UI. `react` contém a lógica central do React (componentes, estado, etc.), enquanto `react-dom` fornece os métodos específicos para interagir com o DOM do navegador.
 
@@ -32,40 +32,43 @@ Nesta aula, construiremos um projeto com uma única página que exibe uma lista 
 
 ### Pré-requisitos
 
-*   Conhecimento básico de HTML, CSS e JavaScript (ES6+).
+* Conhecimento básico de HTML, CSS e JavaScript (ES6+).
 
-*   Familiaridade com os conceitos básicos do Bootstrap 5 (classes de grid, cards, navbar).
+* Familiaridade com os conceitos básicos do Bootstrap 5 (classes de grid, cards, navbar).
 
-*   Node.js e npm (ou yarn) instalados em sua máquina. Você pode baixá-los em [nodejs.org](https://nodejs.org/).
+* Node.js e npm (ou yarn) instalados em sua máquina. Você pode baixá-los em [nodejs.org](https://nodejs.org/).
 
 ## 2. Configuração do Ambiente
 
-1.  **Clone o Repositório (Opcional):** Se você já tem o projeto, pode pular esta etapa.
-    ```bash
-    git clone <URL_DO_REPOSITORIO>
-    cd <NOME_DA_PASTA>
-    ```
+1.**Clone o Repositório (Opcional):** Se você já tem o projeto, pode pular esta etapa.
 
-2.  **Inicie um Projeto com Vite (Alternativa):** Para começar do zero:
-    ```bash
-    npm create vite@latest meu-primeiro-app-react --template react
-    cd meu-primeiro-app-react
-    ```
-    
-    *   Isso cria uma estrutura básica de projeto React com Vite.
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd <NOME_DA_PASTA>
+```
 
-3.  **Instale as Dependências:** Navegue até a pasta do projeto no terminal e execute:
-    ```bash
-    npm install
-    ```    
-    
-    *   Este comando lê o arquivo `package.json` e baixa todas as bibliotecas necessárias (React, ReactDOM, etc.) para a pasta `node_modules`.
+2.**Inicie um Projeto com Vite (Alternativa)**: Para começar do zero:
+
+```bash
+npm create vite@latest meu-primeiro-app-react --template react
+cd meu-primeiro-app-react
+```
+
+* Isso cria uma estrutura básica de projeto React com Vite.
+
+3.**Instale as Dependências:** Navegue até a pasta do projeto no terminal e execute:
+
+```bash
+npm install
+```
+
+* Este comando lê o arquivo `package.json` e baixa todas as bibliotecas necessárias (React, ReactDOM, etc.) para a pasta `node_modules`.
 
 ## 3. Estrutura do Projeto
 
 A estrutura de pastas final desta aula, considerando um projeto React feito com Vite é:
 
-```
+```bash
 react01/
 ├── node_modules/      # Dependências instaladas pelo npm
 ├── public/            # Arquivos estáticos (não processados pelo Vite)
@@ -90,7 +93,7 @@ react01/
 
 A partir de agora, vamos detalhar cada parte do código, explicando o que cada arquivo faz e como eles se interagem.
 
-**1. `index.html` (Raiz do Projeto)**
+### 4.1. `index.html` (Raiz do Projeto)**
 
 Este é o arquivo HTML principal que o navegador carrega. O Vite o utiliza como ponto de entrada.
 
@@ -117,11 +120,11 @@ Este é o arquivo HTML principal que o navegador carrega. O Vite o utiliza como 
 </html>
 ```
 
-*   **`<div id="root">`:** Elemento crucial onde o React montará a aplicação. As classes `d-flex flex-column min-vh-100` do Bootstrap são usadas para garantir que o layout ocupe toda a altura da viewport e que o rodapé (que adicionaremos depois) fique no final.
+* **`<div id="root">`:** Elemento crucial onde o React montará a aplicação. As classes `d-flex flex-column min-vh-100` do Bootstrap são usadas para garantir que o layout ocupe toda a altura da viewport e que o rodapé (que adicionaremos depois) fique no final.
 
-*   **`<script type="module" src="/src/main.jsx">`:** Carrega o ponto de entrada da nossa aplicação React. `type="module"` é essencial para usar `import`/`export` do JavaScript moderno.
+* **`<script type="module" src="/src/main.jsx">`:** Carrega o ponto de entrada da nossa aplicação React. `type="module"` é essencial para usar `import`/`export` do JavaScript moderno.
 
-**2. `src/main.jsx` (Ponto de Entrada do React)**
+### 4.2. `src/main.jsx` (Ponto de Entrada do React)**
 
 Este arquivo inicializa o React e renderiza o componente principal (`App`) dentro do `div#root`.
 
@@ -144,23 +147,23 @@ root.render(
 );
 ```
 
-*   **`createRoot`:** A API recomendada para iniciar aplicações React. Ela oferece melhorias de performance e concorrência em comparação com a antiga `ReactDOM.render`.
-   
-*   **`StrictMode`:** Um componente especial do React que não renderiza nenhuma UI visível, mas ativa verificações e avisos adicionais em desenvolvimento para ajudar a identificar potenciais problemas (ex: uso de APIs legadas, efeitos colaterais inesperados). É uma boa prática usá-lo na raiz da aplicação. Após a fase de desenvolvimento, ele pode ser removido ou mantido, dependendo do projeto.
-   
-*   **`<App />`:** É aqui que nosso componente principal é chamado. A sintaxe `<NomeComponente />` é como usamos componentes em JSX.
+* **`createRoot`:** A API recomendada para iniciar aplicações React. Ela oferece melhorias de performance e concorrência em comparação com a antiga `ReactDOM.render`.
 
-**3. Componentização: Criando Peças Reutilizáveis**
+* **`StrictMode`:** Um componente especial do React que não renderiza nenhuma UI visível, mas ativa verificações e avisos adicionais em desenvolvimento para ajudar a identificar potenciais problemas (ex: uso de APIs legadas, efeitos colaterais inesperados). É uma boa prática usá-lo na raiz da aplicação. Após a fase de desenvolvimento, ele pode ser removido ou mantido, dependendo do projeto.
+
+* **`<App />`:** É aqui que nosso componente principal é chamado. A sintaxe `<NomeComponente />` é como usamos componentes em JSX.
+
+### 4.3. Componentização: Criando Peças Reutilizáveis
 
 A ideia central do React é dividir a UI em componentes. Vamos criar três componentes básicos: `Header`, `Footer` e `Card`.
 
-*   Crie as pastas `src/components` e `src/pages`.
+* Crie as pastas `src/components` e `src/pages`.
 
-*   Mova (ou crie) o `App.jsx` para dentro de `src/pages`.
+* Mova (ou crie) o `App.jsx` para dentro de `src/pages`.
 
-*   Crie os arquivos `Header.jsx`, `Footer.jsx` e `Card.jsx` dentro de `src/components`.
+* Crie os arquivos `Header.jsx`, `Footer.jsx` e `Card.jsx` dentro de `src/components`.
 
-**4. `src/components/Header.jsx`**
+### 4.4. `src/components/Header.jsx`
 
 Este é um componente funcional (baseado em função) simples para o cabeçalho. Versões iniciais do React usavam classes, mas a abordagem funcional é mais moderna e recomendada.
 
@@ -194,15 +197,15 @@ const Header = () => {
 export default Header;
 ```
 
-*   **Componente Funcional:** A forma moderna e recomendada de criar componentes em React. É basicamente uma função JavaScript que retorna JSX.
+* **Componente Funcional:** A forma moderna e recomendada de criar componentes em React. É basicamente uma função JavaScript que retorna JSX.
 
-*   **JSX (JavaScript XML):** Uma extensão de sintaxe que permite escrever "HTML" dentro do JavaScript. Note que usamos `className` em vez de `class`.
+* **JSX (JavaScript XML):** Uma extensão de sintaxe que permite escrever "HTML" dentro do JavaScript. Note que usamos `className` em vez de `class`.
 
-*   **`export default Header;`:** Torna o componente `Header` disponível para ser importado em outros arquivos (como o `App.jsx`).
+* **`export default Header;`:** Torna o componente `Header` disponível para ser importado em outros arquivos (como o `App.jsx`).
 
-*   **Alternativa de Navegação:** Em uma aplicação React completa com múltiplas páginas (Single Page Application - SPA), usaríamos uma biblioteca como `react-router-dom` e seus componentes `<Link>` em vez de `<a>` para evitar recarregamentos completos da página.
+* **Alternativa de Navegação:** Em uma aplicação React completa com múltiplas páginas (Single Page Application - SPA), usaríamos uma biblioteca como `react-router-dom` e seus componentes `<Link>` em vez de `<a>` para evitar recarregamentos completos da página.
 
-**5. `src/components/Footer.jsx`**
+### 4.5. `src/components/Footer.jsx`
 
 Similar ao Header, um componente funcional para o rodapé.
 
@@ -223,7 +226,7 @@ const Footer = () => {
 export default Footer;
 ```
 
-**6. `src/components/Card.jsx`**
+### 4.6. `src/components/Card.jsx`
 
 Este componente receberá dados (via `props`) para exibir informações diferentes para cada produto.
 
@@ -256,13 +259,13 @@ const Card = ({ image, title, description, link }) => {
 export default Card;
 ```
 
-*   **Props (Propriedades):** São como argumentos de função para componentes React. Permitem passar dados de um componente pai (`App`) para um componente filho (`Card`). Aqui, recebemos `image`, `title`, `description` e `link`.
+* **Props (Propriedades):** São como argumentos de função para componentes React. Permitem passar dados de um componente pai (`App`) para um componente filho (`Card`). Aqui, recebemos `image`, `title`, `description` e `link`.
 
-*   **Desestruturação (`{ image, title, ... }`):** Uma forma concisa de extrair valores de objetos ou arrays. Facilita o acesso às props.
+* **Desestruturação (`{ image, title, ... }`):** Uma forma concisa de extrair valores de objetos ou arrays. Facilita o acesso às props.
 
-*   **Expressões `{}` em JSX:** Permitem incorporar variáveis ou expressões JavaScript diretamente no JSX.
+* **Expressões `{}` em JSX:** Permitem incorporar variáveis ou expressões JavaScript diretamente no JSX.
 
-**7. `src/pages/App.jsx` (Componente Principal)**
+### 4.7. `src/pages/App.jsx` (Componente Principal)
 
 Agora, vamos montar tudo no componente `App`.
 
@@ -276,12 +279,42 @@ import Header from "../components/Header";
 function App() {
   // Dados dos produtos (em uma aplicação real, viriam de uma API)
   const products = [
-    { id: 1, image: "https://picsum.photos/300/200?random=1", title: "Produto 1", description: "Descrição breve e interessante do Produto 1." },
-    { id: 2, image: "https://picsum.photos/300/200?random=2", title: "Produto 2", description: "Descrição breve e interessante do Produto 2." },
-    { id: 3, image: "https://picsum.photos/300/200?random=3", title: "Produto 3", description: "Descrição breve e interessante do Produto 3." },
-    { id: 4, image: "https://picsum.photos/300/200?random=4", title: "Produto 4", description: "Descrição breve e interessante do Produto 4." },
-    { id: 5, image: "https://picsum.photos/300/200?random=5", title: "Produto 5", description: "Descrição breve e interessante do Produto 5." },
-    { id: 6, image: "https://picsum.photos/300/200?random=6", title: "Produto 6", description: "Descrição breve e interessante do Produto 6." },
+    { 
+      id: 1, 
+      image: "https://picsum.photos/300/200?random=1", 
+      title: "Produto 1", 
+      description: "Descrição breve e interessante do Produto 1."
+    },
+    { 
+      id: 2, 
+      image: "https://picsum.photos/300/200?random=2", 
+      title: "Produto 2", 
+      description: "Descrição breve e interessante do Produto 2." 
+    },
+    { 
+      id: 3,
+      image: "https://picsum.photos/300/200?random=3",
+      title: "Produto 3",
+      description: "Descrição breve e interessante do Produto 3." 
+    },
+    { 
+      id: 4,
+      image: "https://picsum.photos/300/200?random=4",
+      title: "Produto 4",
+      description: "Descrição breve e interessante do Produto 4."
+    },
+    { 
+      id: 5,
+      image: "https://picsum.photos/300/200?random=5",
+      title: "Produto 5",
+      description: "Descrição breve e interessante do Produto 5." 
+    },
+    { 
+      id: 6,
+      image: "https://picsum.photos/300/200?random=6",
+      title: "Produto 6",
+      description: "Descrição breve e interessante do Produto 6." 
+    },
   ];
 
   // Retorna a estrutura JSX da página
@@ -292,7 +325,8 @@ function App() {
         <h1>Nossos Produtos</h1>
         <hr />
         {/* Grid do Bootstrap para os cards: 4 colunas em telas médias ou maiores */}
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4"> {/* Ajustado para melhor responsividade */}
+        {/* Ajustado para melhor responsividade */}
+        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
           {/* Mapeia o array de produtos para renderizar um Card para cada um */}
           {products.map((product) => (
             // Passa os dados do produto como props para o componente Card
@@ -316,66 +350,66 @@ function App() {
 export default App;
 ```
 
-*   **Importando Componentes:** Usamos `import` para trazer os componentes `Header`, `Footer` e `Card`.
+* **Importando Componentes:** Usamos `import` para trazer os componentes `Header`, `Footer` e `Card`.
 
-*   **Dados:** Definimos um array `products` diretamente no código. Em aplicações reais, esses dados geralmente vêm de uma fonte externa (API).
+* **Dados:** Definimos um array `products` diretamente no código. Em aplicações reais, esses dados geralmente vêm de uma fonte externa (API).
 
-*   **Renderização de Listas com `.map()`:** O método `map` do JavaScript é usado para transformar cada item do array `products` em um componente `<Card>`.
+* **Renderização de Listas com `.map()`:** O método `map` do JavaScript é usado para transformar cada item do array `products` em um componente `<Card>`.
 
-*   **Passando Props:** Para cada `product` no `map`, passamos suas propriedades (`id`, `image`, `title`, `description`) como `props` para o componente `<Card>`.
+* **Passando Props:** Para cada `product` no `map`, passamos suas propriedades (`id`, `image`, `title`, `description`) como `props` para o componente `<Card>`.
 
-*   **Prop `key`:** Ao renderizar listas, o React precisa de uma `key` única e estável para cada elemento. Isso ajuda o React a identificar eficientemente quais itens mudaram, foram adicionados ou removidos, otimizando as atualizações do DOM. Usar o `id` do produto é ideal aqui. **Nunca use o índice do array como `key` se a ordem dos itens puder mudar.**
-   
-### Como Executar o Projeto
+* **Prop `key`:** Ao renderizar listas, o React precisa de uma `key` única e estável para cada elemento. Isso ajuda o React a identificar eficientemente quais itens mudaram, foram adicionados ou removidos, otimizando as atualizações do DOM. Usar o `id` do produto é ideal aqui. **Nunca use o índice do array como `key` se a ordem dos itens puder mudar.**
 
-1.  Certifique-se de ter instalado as dependências com `npm install`.
+## 5. Como Executar o Projeto
 
-2.  Inicie o servidor de desenvolvimento Vite:
+1.Certifique-se de ter instalado as dependências com `npm install`.
+
+2.Inicie o servidor de desenvolvimento Vite:
 
 ```bash
 npm run dev
 ```
 
-3.  Abra seu navegador e acesse o endereço fornecido pelo Vite (geralmente `http://localhost:5173`).
+3.Abra seu navegador e acesse o endereço fornecido pelo Vite (geralmente `http://localhost:5173`).
 
 Você verá a página de produtos funcionando! Qualquer alteração que você fizer nos arquivos `.jsx` será refletida quase instantaneamente no navegador graças ao HMR do Vite.
 
-## 5. Conceitos Fundamentais Revisados
+## 6. Conceitos Fundamentais Revisados
 
-*   **Componentes Funcionais:** Funções JavaScript que retornam JSX.
+* **Componentes Funcionais:** Funções JavaScript que retornam JSX.
 
-*   **JSX:** Sintaxe que mistura HTML e JavaScript (`className`, `{expressões}`).
+* **JSX:** Sintaxe que mistura HTML e JavaScript (`className`, `{expressões}`).
 
-*   **Props:** Como passar dados de componentes pai para filho.
+* **Props:** Como passar dados de componentes pai para filho.
 
-*   **Componentização:** Dividir a UI em partes reutilizáveis (`Header`, `Footer`, `Card`).
+* **Componentização:** Dividir a UI em partes reutilizáveis (`Header`, `Footer`, `Card`).
 
-*   **Renderização de Listas:** Usar `.map()` para gerar múltiplos componentes a partir de dados.
+* **Renderização de Listas:** Usar `.map()` para gerar múltiplos componentes a partir de dados.
 
-*   **Keys:** Atributo essencial para otimizar a renderização de listas.
+* **Keys:** Atributo essencial para otimizar a renderização de listas.
 
-*   **`createRoot` e `StrictMode`:** A forma moderna de iniciar a aplicação e detectar problemas.
+* **`createRoot` e `StrictMode`:** A forma moderna de iniciar a aplicação e detectar problemas.
 
-*   **Vite e SWC:** Ferramentas que tornam o desenvolvimento rápido e eficiente.
+* **Vite e SWC:** Ferramentas que tornam o desenvolvimento rápido e eficiente.
 
-### Próximos Passos
+## 7. Próximos Passos
 
 Este projeto é apenas o começo! A partir daqui, vamos estudar conceitos mais avançados do React, a saber:
 
-*   **Roteamento (`react-router-dom`):** Para criar aplicações com múltiplas páginas (SPAs).
+* **Roteamento (`react-router-dom`):** Para criar aplicações com múltiplas páginas (SPAs).
   
-*   **Estado (`useState`):** Para gerenciar dados que mudam ao longo do tempo dentro de um componente (ex: contador, dados de formulário).
+* **Estado (`useState`):** Para gerenciar dados que mudam ao longo do tempo dentro de um componente (ex: contador, dados de formulário).
 
-*   **Eventos (`onClick`, `onChange`):** Para responder a interações do usuário.
+* **Eventos (`onClick`, `onChange`):** Para responder a interações do usuário.
 
-*   **Hooks (`useEffect`, `useContext`, etc.):** Funções especiais que permitem usar estado e outros recursos do React em componentes funcionais.
+* **Hooks (`useEffect`, `useContext`, etc.):** Funções especiais que permitem usar estado e outros recursos do React em componentes funcionais.
 
-*   **Requisições a APIs (`fetch` ou `axios`):** Para buscar dados de um servidor externo.
+* **Requisições a APIs (`fetch` ou `axios`):** Para buscar dados de um servidor externo.
 
-*   **Estilização:** Explorar outras formas de estilizar componentes (CSS Modules, Styled Components, Tailwind CSS).
+* **Estilização:** Explorar outras formas de estilizar componentes (CSS Modules, Styled Components, Tailwind CSS).
 
 Espero que esta aula tenha fornecido uma introdução clara e prática ao mundo do ReactJS! Até a próxima aula!
 
-## 6. Conclusão
+## 8. Conclusão
 
 Neste primeiro contato com o React, você aprendeu os conceitos fundamentais da biblioteca, como criar componentes funcionais, passar props e renderizar listas. Além disso, conheceu ferramentas modernas, como Vite e SWC, que tornam o desenvolvimento mais rápido e eficiente. Com essa base, você está pronto para explorar recursos mais avançados e construir aplicações web dinâmicas e interativas.
