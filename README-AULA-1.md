@@ -1,6 +1,6 @@
 # ReactJS :: Aula 01
 
-**Prof. Ricardo Maroquio**
+Autor: *Prof. Ricardo Maroquio*
 
 Bem-vindo à primeira aula sobre ReactJS! Este projeto serve como um estudo de caso prático para introduzir os conceitos fundamentais do React, utilizando ferramentas modernas como Vite e SWC. Ele foi pensado para alunos que já possuem conhecimentos básicos de HTML, CSS (incluindo Bootstrap 5) e JavaScript.
 
