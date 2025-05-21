@@ -1,11 +1,11 @@
-import placeholderIndisponivel from '@assets/img/placeholder3x2.svg';
+import placeholderIndisponivel from '@assets/img/indisponivel3x2.svg';
 import { formatPrice } from '../assets/js/util';
 
 const Card = ({ image, title, description, price, onAddToCartClick }) => {
   return (
     <div className="col">
       <div className="card h-100">
-        <div style={{ height: '200px', overflow: 'hidden' }}>
+        <div className='p-1'>
           <img
             src={image}
             className="card-img-top"

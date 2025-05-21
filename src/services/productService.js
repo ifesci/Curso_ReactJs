@@ -1,4 +1,5 @@
 import supabase from './supabase';
+import indisponivel3x2 from '@assets/img/indisponivel3x2.svg';
 
 const productService = {
   async getProductsByPage(page = 1, limit = 12) {
@@ -12,6 +13,13 @@ const productService = {
     if (error) {
       console.error('Erro ao buscar produtos:', error);
       throw error;
+    }
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].image_url) {
+        data[i].image_url = supabase.storage.from('product-images').getPublicUrl(data[i].image_url).data.publicUrl;
+      } else {
+        data.image_url = indisponivel3x2;
+      }
     }
     return {
       products: data,

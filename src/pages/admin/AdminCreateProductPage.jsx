@@ -27,6 +27,7 @@ const AdminCreateProductPage = () => {
                 price: productToEdit.price,
                 image_url: productToEdit.image_url
             });
+            console.log('productToEdit', productToEdit);
         }
     }, [productToEdit]);
     const createProductMutation = useMutation({
@@ -154,10 +155,10 @@ const AdminCreateProductPage = () => {
                                 </button>
                                 <input type="file" accept="image/*" className="d-none" ref={fileRef} onChange={handleFileSelect} />
                             </div>
-                            {product.image_preview || product.image_url ? (
+                            {product.image_url ? (
                                 <div className="mb-3 text-start">
                                     <img
-                                        src={product.image_preview || product.image_url}
+                                        src={product.image_url}
                                         alt="Pré-visualização"
                                         className="img-thumbnail"
                                         style={{ maxHeight: 200 }} />
