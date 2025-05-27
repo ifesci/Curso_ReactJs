@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import productService from '@services/productService';
 
-const AdminCreateProductPage = () => {
+const AdminProductFormPage = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
     const queryClient = useQueryClient();
@@ -200,4 +200,4 @@ const AdminCreateProductPage = () => {
     );
 };
 
-export default AdminCreateProductPage;
+export default AdminProductFormPage;
