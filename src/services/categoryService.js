@@ -4,7 +4,6 @@ const categoryService = {
   async getCategoriesByPage(page = 1, limit = 12) {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
-    
     const { data, error, count } = await supabase
       .from('categories')
       .select('*', { count: 'exact' })
@@ -14,13 +13,13 @@ const categoryService = {
       console.error('Erro ao buscar categorias:', error);
       throw error;
     }
-    return { 
-      categories: data, 
+    return {
+      categories: data,
       total: count,
       totalPages: Math.ceil(count / limit)
     };
   },
-  
+
   async getCategoryById(id) {
     const { data, error } = await supabase
       .from('categories')
@@ -33,7 +32,7 @@ const categoryService = {
     }
     return data;
   },
-  
+
   async createCategory(category) {
     const { data, error } = await supabase
       .from('categories')
@@ -45,7 +44,7 @@ const categoryService = {
     }
     return data[0];
   },
-  
+
   async updateCategory(id, category) {
     const { data, error } = await supabase
       .from('categories')
@@ -63,14 +62,14 @@ const categoryService = {
     const { error } = await supabase
       .from('categories')
       .delete()
-      .eq('id', id);    
+      .eq('id', id);
     if (error) {
       console.error('Erro ao deletar categoria:', error);
       throw error;
     }
     return true;
   }
-  
+
 };
 
 export default categoryService;

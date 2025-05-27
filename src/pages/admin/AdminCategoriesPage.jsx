@@ -27,7 +27,7 @@ const AdminCategoriesPage = () => {
     window.scrollTo(0, 0);
   }, [currentPage]);
   const deleteMutation = useMutation({
-    mutationFn: categoryService.deleteProduct,
+    mutationFn: categoryService.deleteCategory,
     onSuccess: () => {
       toast.success('Categoria excluído', { icon: '🗑️' });
       queryClient.invalidateQueries(['categories']);
@@ -40,7 +40,7 @@ const AdminCategoriesPage = () => {
     }
   };
   const handleEdit = (category) => {
-    navigate(`/admin/categories/edit/${product.id}`, { state: { category } });
+    navigate(`/admin/categories/edit/${category.id}`, { state: { category } });
   };
   if (isError) {
     return (

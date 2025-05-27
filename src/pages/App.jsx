@@ -10,6 +10,7 @@ import ProductsPage from '@pages/ProductsPage';
 import AdminCategoriesPage from '@pages/admin/AdminCategoriesPage';
 import AdminProductsPage from '@pages/admin/AdminProductsPage';
 import AdminUsersPage from '@pages/admin/AdminUsersPage';
+import AdminCategoryFormPage from '@pages/admin/AdminCategoryFormPage';
 import AdminProductFormPage from '@pages/admin/AdminProductFormPage';
 import LoginPage from '@pages/auth/LoginPage';
 import RegisterPage from '@pages/auth/RegisterPage';
@@ -62,6 +63,20 @@ function App() {
               element={
                 <AdminRoute>
                   <AdminCategoriesPage />
+                </AdminRoute>
+              } />
+            <Route
+              path="/admin/categories/new"
+              element={
+                <AdminRoute>
+                  <AdminCategoryFormPage />
+                </AdminRoute>
+              } />
+            <Route
+              path="/admin/categories/edit/:id"
+              element={
+                <AdminRoute>
+                  <AdminCategoryFormPage />
                 </AdminRoute>
               } />
             <Route
