@@ -1,0 +1,9 @@
+.active>.page-link {
+    background-color: var(--bs-dark);
+    border-color: var(--bs-dark);
+    color: white;
+}
+
+.page-link {
+    color: var(--bs-dark);
+}

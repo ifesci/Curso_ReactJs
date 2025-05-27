@@ -1,5 +1,5 @@
 import placeholderIndisponivel from '@assets/img/indisponivel3x2.svg';
-import { formatPrice } from '../assets/js/util';
+import { formatPrice } from '@assets/js/util';
 
 const Card = ({ image, title, description, price, onAddToCartClick }) => {
   return (
@@ -19,15 +19,15 @@ const Card = ({ image, title, description, price, onAddToCartClick }) => {
           <h5 className="card-title">{title}</h5>
           <p className="card-text flex-grow-1">{description}</p>
           <div className="mt-auto">
-            <p className="card-text fw-bold text-primary fs-5 mb-2">
+            <p className="card-text fw-bold text-danger fs-3 mb-2">
               {formatPrice(price)}
             </p>
           </div>
         </div>
-        <div className="card-footer">
+        <div className="card-footer p-3">
           <button
             onClick={onAddToCartClick}
-            className="btn btn-success w-100">
+            className="btn btn-danger btn-lg w-100">
             <i className="bi-cart-plus me-2"></i>
             Adicionar ao Carrinho
           </button>

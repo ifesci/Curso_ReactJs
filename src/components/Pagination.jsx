@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import "@assets/css/pagination.css";
 
 const Pagination = ({ currentPage, totalPages, basePath = '' }) => {
     const location = useLocation();
