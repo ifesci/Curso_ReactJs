@@ -93,7 +93,8 @@ const AdminProductsPage = () => {
                             src={product.image_url}
                             alt={product.title}
                             className="rounded"
-                            style={{ width: 'auto', height: '60px', }} />
+                            style={{ width: 'auto', height: '60px', }} onError={(e) => { 
+                              e.target.src = 'https://placehold.co/80x80?text=?';}} />
                         </td>
                         <td>{product.title}</td>
                         <td className="one-line-cell">{formatPrice(product.price)}</td>
