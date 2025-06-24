@@ -1071,7 +1071,123 @@ BEGIN
 END;
 $$;
 
--- 14.3 Função para fechar pedido (Cart -> Ordered)
+-- 14.3 Função para atualizar quantidade de item no carrinho
+CREATE OR REPLACE FUNCTION public.update_cart_item(
+  p_product_id bigint,
+  p_quantity integer
+)
+RETURNS jsonb
+LANGUAGE plpgsql 
+SECURITY DEFINER 
+SET search_path = public
+AS $$
+DECLARE
+  cart_order_id bigint;
+  product_price numeric;
+  current_quantity integer;
+BEGIN
+  -- Verificar se usuário está logado
+  IF auth.uid() IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Usuário não autenticado');
+  END IF;
+  
+  -- Verificar se quantidade é válida
+  IF p_quantity <= 0 THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Quantidade deve ser maior que zero');
+  END IF;
+  
+  -- Buscar pedido em status Cart do usuário
+  SELECT o.id INTO cart_order_id
+  FROM orders o
+  WHERE o.customer_id = auth.uid()
+  AND get_latest_order_status(o.id) = 'Cart'
+  LIMIT 1;
+  
+  IF cart_order_id IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Carrinho não encontrado');
+  END IF;
+  
+  -- Verificar se o item existe no carrinho
+  SELECT quantity INTO current_quantity
+  FROM order_items
+  WHERE order_id = cart_order_id
+  AND product_id = p_product_id;
+  
+  IF current_quantity IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Item não encontrado no carrinho');
+  END IF;
+  
+  -- Obter preço atual do produto
+  SELECT price INTO product_price
+  FROM products
+  WHERE id = p_product_id AND is_active = true;
+  
+  IF product_price IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Produto não encontrado ou inativo');
+  END IF;
+  
+  -- Atualizar quantidade do item
+  UPDATE order_items
+  SET quantity = p_quantity,
+      unity_value = product_price
+  WHERE order_id = cart_order_id
+  AND product_id = p_product_id;
+  
+  RETURN jsonb_build_object('success', true, 'message', 'Quantidade atualizada com sucesso');
+END;
+$$;
+
+-- 14.4 Função para remover item do carrinho
+CREATE OR REPLACE FUNCTION public.remove_cart_item(
+  p_product_id bigint
+)
+RETURNS jsonb
+LANGUAGE plpgsql 
+SECURITY DEFINER 
+SET search_path = public
+AS $$
+DECLARE
+  cart_order_id bigint;
+  item_exists boolean;
+BEGIN
+  -- Verificar se usuário está logado
+  IF auth.uid() IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Usuário não autenticado');
+  END IF;
+  
+  -- Buscar pedido em status Cart do usuário
+  SELECT o.id INTO cart_order_id
+  FROM orders o
+  WHERE o.customer_id = auth.uid()
+  AND get_latest_order_status(o.id) = 'Cart'
+  LIMIT 1;
+  
+  IF cart_order_id IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Carrinho não encontrado');
+  END IF;
+  
+  -- Verificar se o item existe no carrinho
+  SELECT EXISTS(
+    SELECT 1
+    FROM order_items
+    WHERE order_id = cart_order_id
+    AND product_id = p_product_id
+  ) INTO item_exists;
+  
+  IF NOT item_exists THEN
+    RETURN jsonb_build_object('success', false, 'message', 'Item não encontrado no carrinho');
+  END IF;
+  
+  -- Remover item do carrinho
+  DELETE FROM order_items
+  WHERE order_id = cart_order_id
+  AND product_id = p_product_id;
+  
+  RETURN jsonb_build_object('success', true, 'message', 'Item removido do carrinho');
+END;
+$$;
+
+-- 14.5 Função para fechar pedido (Cart -> Ordered)
 CREATE OR REPLACE FUNCTION public.close_order(
   p_order_id bigint,
   p_address_data jsonb
@@ -1131,7 +1247,7 @@ BEGIN
 END;
 $$;
 
--- 14.4 Função para pagar pedido (Ordered -> Paid)
+-- 14.6 Função para pagar pedido (Ordered -> Paid)
 CREATE OR REPLACE FUNCTION public.pay_order(p_order_id bigint)
 RETURNS jsonb
 LANGUAGE plpgsql 
@@ -1169,7 +1285,7 @@ BEGIN
 END;
 $$;
 
--- 14.5 Função para alterar status de admin (NOVA)
+-- 14.7 Função para alterar status de admin (NOVA)
 CREATE OR REPLACE FUNCTION public.set_admin_status(
   p_user_id uuid,
   p_is_admin boolean

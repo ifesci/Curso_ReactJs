@@ -68,15 +68,20 @@ const cartService = {
   // Remover item do carrinho
   async removeFromCart(orderId, productId) {
     try {
-      const { error } = await supabase
-        .from('order_items')
-        .delete()
-        .eq('order_id', orderId)
-        .eq('product_id', productId);
+      // Usar a função RPC remove_cart_item
+      // Nota: orderId não é necessário pois a função RPC já busca o carrinho do usuário atual
+      const { data, error } = await supabase.rpc('remove_cart_item', {
+        p_product_id: productId
+      });
 
       if (error) {
         console.error('Erro ao remover do carrinho:', error);
         throw error;
+      }
+
+      // Verificar se a operação foi bem-sucedida
+      if (!data.success) {
+        throw new Error(data.message || 'Erro ao remover item do carrinho');
       }
 
       return true;
@@ -87,21 +92,27 @@ const cartService = {
   },
 
   // Atualizar quantidade de um item no carrinho
-  async updateCartItemQuantity(orderId, productId, quantity) {
+  async updateCartItemQuantity(orderId, productId, newQuantity) {
     try {
-      if (quantity <= 0) {
+      if (newQuantity <= 0) {
         return this.removeFromCart(orderId, productId);
       }
 
-      const { error } = await supabase
-        .from('order_items')
-        .update({ quantity })
-        .eq('order_id', orderId)
-        .eq('product_id', productId);
+      // Usar a função RPC update_cart_item
+      // Nota: orderId não é necessário pois a função RPC já busca o carrinho do usuário atual
+      const { data, error } = await supabase.rpc('update_cart_item', {
+        p_product_id: productId,
+        p_quantity: newQuantity
+      });
 
       if (error) {
         console.error('Erro ao atualizar quantidade:', error);
         throw error;
+      }
+
+      // Verificar se a operação foi bem-sucedida
+      if (!data.success) {
+        throw new Error(data.message || 'Erro ao atualizar quantidade do item');
       }
 
       return true;
