@@ -18,7 +18,7 @@ const adminService = {
             if (user.avatar_url) {
                 user.avatar_url = supabase.storage.from('avatars').getPublicUrl(user.avatar_url).data.publicUrl;
             } else {
-                user.avatar_url = {avatar40x40};
+                user.avatar_url = avatar40x40;
             }
         }
         return {

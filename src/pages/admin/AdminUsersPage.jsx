@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import adminService from '@services/adminService';
 import { useAuth } from '@contexts/AuthContext';
 import Pagination from '@components/Pagination';
+import avatar40x40 from '@assets/img/avatar40x40.svg';
 
 const USERS_PER_PAGE = 12;
 
@@ -112,6 +113,9 @@ const AdminUsersPage = () => {
                                                                 width: 40,
                                                                 height: 40,
                                                                 objectFit: 'cover',
+                                                            }}
+                                                            onError={(e) => {
+                                                                e.target.src = avatar40x40;
                                                             }} />
                                                     </td>
                                                     <td>{u.full_name}</td>
