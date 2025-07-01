@@ -2,13 +2,14 @@
   "name": "react01",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://ifesci.github.io/Curso_ReactJs",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy-custom": "gh-pages -d ./dist --cname vr.maroquio.com",
+    "deploy-custom": "gh-pages -d ./dist --cname loja.maroquio.com",
     "deploy": "gh-pages -d ./dist"
   },
   "dependencies": {

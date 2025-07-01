@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 import Footer from "@components/Footer";
 import Header from "@components/Header";
@@ -81,7 +81,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="d-flex flex-column min-vh-100">
         <Header cartCount={cartItemCount} onCartUpdate={loadCartCount} />
         <main className="container my-4 flex-grow-1">
@@ -172,7 +172,7 @@ function App() {
         <Footer />
         <Toaster position="top-right" />
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
